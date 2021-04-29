@@ -13,7 +13,9 @@ export interface StringPreviewProps {
 export const StringPreview: FC<StringPreviewProps> = ({ characters, ...props }) => {
   return (
     <span css={styles.stringPreview} {...props}>
-      {characters.map((character) => <span>{character.character}</span>)}
+      {characters.map((character) => (
+        <span key={character.uuid}>{character.character}</span>
+      ))}
     </span>
   );
 }
