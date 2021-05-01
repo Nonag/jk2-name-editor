@@ -1,9 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import type { ChangeEvent, FC } from 'react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 
 import type { ColoredCharacter } from 'src/types';
+import Box from 'src/components/Box/Box';
+import ChatPreview from 'src/components/ChatPreview/ChatPreview';
 import StringInput from 'src/components/StringInput/StringInput';
 import StringPreview from 'src/components/StringPreview/StringPreview';
 
@@ -61,18 +63,36 @@ export const NameEditorView: FC = () => {
     setInputString(_inputString);
   };
 
+  // Set default name to 'Padawan' on mount.
+  useEffect(() => {
+    setInputString('Padawan');
+    setCharacters(createColoredCharacters('Padawan'));
+  }, []);
+
   return (
     <div css={styles.nameEditorView}>
-      <h1>Jedi Knight II Name Editor</h1>
+      <img
+        css={styles.backgroundImg}
+        alt="bespin_streets"
+        src="/static/images/editor_background.jpg"
+      />
 
-      <p>
-        Type in your desired name and modify each character's appearance in the
-        preview.
-      </p>
+      <div css={styles.contentContainer}>
+        <Box css={styles.box}>
+          <h1>Jedi Knight II Name Editor</h1>
 
-      <StringPreview characters={characters} />
+          <p>
+            Type in your desired name and modify each character's appearance in
+            the preview.
+          </p>
 
-      <StringInput onChange={handleChange} value={inputString} />
+          <StringPreview characters={characters} indicateSpaces />
+
+          <StringInput onChange={handleChange} value={inputString} />
+        </Box>
+
+        <ChatPreview css={styles.chat} characters={characters} />
+      </div>
     </div>
   );
 };
