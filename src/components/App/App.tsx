@@ -3,8 +3,9 @@ import type { FC } from 'react';
 import React from 'react';
 import type { Options } from '@emotion/cache';
 import createCache from '@emotion/cache';
-import { CacheProvider, Global } from '@emotion/react';
+import { CacheProvider, Global, ThemeProvider } from '@emotion/react';
 
+import theme from 'src/theme/theme';
 import NameEditorView from 'src/views/NameEditorView/NameEditorView';
 
 import styles from './App.styles';
@@ -20,9 +21,11 @@ const cssCache = createCache(cacheOptions);
 const App: FC = () => {
   return (
     <CacheProvider value={cssCache}>
-      <Global styles={[styles.normalize, styles.app]} />
+      <ThemeProvider theme={theme}>
+        <Global styles={[styles.normalize, styles.app]} />
 
-      <NameEditorView />
+        <NameEditorView />
+      </ThemeProvider>
     </CacheProvider>
   );
 };
