@@ -1,4 +1,4 @@
-import { css } from '@emotion/react'
+import { css } from '@emotion/react';
 
 const styles = {
   nameEditorView: css({
@@ -7,6 +7,6 @@ const styles = {
     alignItems: 'center',
     flexDirection: 'column',
   }),
-}
+};
 
 export default styles;
