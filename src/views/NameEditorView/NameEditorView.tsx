@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import type { ChangeEvent, FC } from 'react';
 import React, { useState } from 'react';
-import _ from 'lodash';
 import { v4 as uuid } from 'uuid';
 
 import type { ColoredCharacter } from 'src/types';
@@ -14,13 +13,19 @@ export const NameEditorView: FC = () => {
   const [characters, setCharacters] = useState<ColoredCharacter[]>([]);
   const [inputString, setInputString] = useState<string>('');
 
-  const createColoredCharacter = (character: string): ColoredCharacter => ({
-    backgroundColor: '',
-    character,
-    textColor: '',
-    uuid: uuid(),
-  });
+  // Takes any string and returns an array with ColoredCharacter for each character in that string.
+  const createColoredCharacters = (
+    characterString: string,
+  ): ColoredCharacter[] =>
+    [...characterString].map((character) => ({
+      backgroundColor: '',
+      character,
+      textColor: '',
+      uuid: uuid(),
+    }));
 
+  // Updates the inputString value while removing or inserting ColoredCharacters to
+  // the characters state accordingly.
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const _characters = [...characters];
     const _inputString = event.target.value;
@@ -33,19 +38,24 @@ export const NameEditorView: FC = () => {
       : inputString.length - _inputString.length;
 
     // The cursor index before and after a deletion really is always the same, if you think of it.
-    const cursorBefore = isInsertion
-      ? cursorAfter - diffLength
-      : cursorAfter;
+    const cursorBefore = isInsertion ? cursorAfter - diffLength : cursorAfter;
 
-    if (isInsertion)
-      _characters.splice(cursorBefore, 0, createColoredCharacter(_inputString.substr(cursorBefore, cursorAfter)))
-      console.log('hinzugefügt an index', cursorBefore)
+    // Get the inserted sub-string of the new _input.
+    const insertedString = isInsertion
+      ? _inputString.substr(cursorBefore, diffLength)
+      : undefined;
 
-    if (!isInsertion)
+    if (isInsertion) {
+      _characters.splice(
+        cursorBefore,
+        0,
+        ...createColoredCharacters(insertedString!),
+      );
+    }
+
+    if (!isInsertion) {
       _characters.splice(cursorBefore, diffLength);
-      console.log('entfernt an index', cursorBefore)
-
-    console.log(createColoredCharacter(_inputString.substr(cursorBefore, cursorAfter)));
+    }
 
     setCharacters(_characters);
     setInputString(_inputString);

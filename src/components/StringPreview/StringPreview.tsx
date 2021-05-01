@@ -17,7 +17,9 @@ export const StringPreview: FC<StringPreviewProps> = ({
   return (
     <span css={styles.stringPreview} {...props}>
       {characters.map((character) => (
-        <span key={character.uuid}>{character.character}</span>
+        <span key={character.uuid}>
+          {character.character === ' ' ? <>&sdot;</> : character.character}
+        </span>
       ))}
     </span>
   );
