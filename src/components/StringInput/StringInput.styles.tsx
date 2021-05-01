@@ -1,4 +1,4 @@
-import { css } from '@emotion/react';
+import { css } from '@emotion/react/macro';
 
 const styles = {
   stringInput: css({}),
