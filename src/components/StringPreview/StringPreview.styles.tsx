@@ -1,9 +1,7 @@
-import { css } from '@emotion/react'
+import { css } from '@emotion/react';
 
 const styles = {
-  stringPreview: css({
-
-  }),
+  stringPreview: css({}),
 };
 
 export default styles;

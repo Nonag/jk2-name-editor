@@ -1,8 +1,8 @@
 /** @jsxImportSource @emotion/react */
-import type { FC, ChangeEvent } from 'react';
+import type { ChangeEvent, FC } from 'react';
 import React, { useState } from 'react';
-import { v4 as uuid } from 'uuid';
 import _ from 'lodash';
+import { v4 as uuid } from 'uuid';
 
 import type { ColoredCharacter } from 'src/types';
 import StringInput from 'src/components/StringInput/StringInput';
@@ -14,14 +14,12 @@ export const NameEditorView: FC = () => {
   const [characters, setCharacters] = useState<ColoredCharacter[]>([]);
   const [inputString, setInputString] = useState<string>('');
 
-  const createColoredCharacter = (character: string): ColoredCharacter => (
-    {
-      backgroundColor: '',
-      character,
-      textColor: '',
-      uuid: uuid(),
-    }
-  );
+  const createColoredCharacter = (character: string): ColoredCharacter => ({
+    backgroundColor: '',
+    character,
+    textColor: '',
+    uuid: uuid(),
+  });
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const _characters = [...characters];
@@ -57,15 +55,16 @@ export const NameEditorView: FC = () => {
     <div css={styles.nameEditorView}>
       <h1>Jedi Knight II Name Editor</h1>
 
-      <p>Type in your desired name and modify each character's appearance in the preview.</p>
-
-      <hr />
+      <p>
+        Type in your desired name and modify each character's appearance in the
+        preview.
+      </p>
 
       <StringPreview characters={characters} />
 
       <StringInput onChange={handleChange} value={inputString} />
     </div>
   );
-}
+};
 
 export default NameEditorView;

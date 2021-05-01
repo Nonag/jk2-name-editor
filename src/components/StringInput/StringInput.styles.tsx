@@ -1,9 +1,7 @@
-import { css } from '@emotion/react'
+import { css } from '@emotion/react';
 
 const styles = {
-  stringInput: css({
-
-  }),
+  stringInput: css({}),
 };
 
 export default styles;

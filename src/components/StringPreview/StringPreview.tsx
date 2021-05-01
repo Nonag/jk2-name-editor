@@ -8,9 +8,12 @@ import styles from './StringPreview.styles';
 
 export interface StringPreviewProps {
   characters: ColoredCharacter[];
-};
+}
 
-export const StringPreview: FC<StringPreviewProps> = ({ characters, ...props }) => {
+export const StringPreview: FC<StringPreviewProps> = ({
+  characters,
+  ...props
+}) => {
   return (
     <span css={styles.stringPreview} {...props}>
       {characters.map((character) => (
@@ -18,6 +21,6 @@ export const StringPreview: FC<StringPreviewProps> = ({ characters, ...props }) 
       ))}
     </span>
   );
-}
+};
 
 export default StringPreview;
