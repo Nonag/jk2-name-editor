@@ -27,6 +27,8 @@ const styles = {
   }),
 
   box: css({
+    backgroundColor: theme.colors.background + 'ed',
+    maxWidth: '70%',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',

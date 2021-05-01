@@ -8,7 +8,7 @@ import styles from './Box.styles';
 export interface BoxProps {
   border?: boolean;
   children: ReactNode;
-  css?: SerializedStyles;
+  css?: SerializedStyles | SerializedStyles[];
 }
 
 export const Box: FC<BoxProps> = ({

@@ -1,6 +1,6 @@
 export interface ColoredCharacter {
-  backgroundColor: string;
   character: string;
-  textColor: string;
+  shadowColor?: string;
+  textColor?: string;
   uuid: string;
 }

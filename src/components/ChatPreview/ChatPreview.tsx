@@ -10,7 +10,7 @@ import styles from './ChatPreview.styles';
 
 export interface ChatPreviewProps {
   characters: ColoredCharacter[];
-  css?: SerializedStyles;
+  css?: SerializedStyles | SerializedStyles[];
 }
 
 export const ChatPreview: FC<ChatPreviewProps> = ({

@@ -4,10 +4,11 @@ import React, { useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 
 import type { ColoredCharacter } from 'src/types';
+import theme from 'src/theme/theme';
 import Box from 'src/components/Box/Box';
 import ChatPreview from 'src/components/ChatPreview/ChatPreview';
+import StringEditor from 'src/components/StringEditor/StringEditor';
 import StringInput from 'src/components/StringInput/StringInput';
-import StringPreview from 'src/components/StringPreview/StringPreview';
 
 import styles from './NameEditorView.styles';
 
@@ -20,9 +21,7 @@ export const NameEditorView: FC = () => {
     characterString: string,
   ): ColoredCharacter[] =>
     [...characterString].map((character) => ({
-      backgroundColor: '',
       character,
-      textColor: '',
       uuid: uuid(),
     }));
 
@@ -86,7 +85,11 @@ export const NameEditorView: FC = () => {
             the preview.
           </p>
 
-          <StringPreview characters={characters} indicateSpaces />
+          <StringEditor
+            style={{ margin: theme.spacing(5) }}
+            characters={characters}
+            onColorUpdate={setCharacters}
+          />
 
           <StringInput onChange={handleChange} value={inputString} />
         </Box>
