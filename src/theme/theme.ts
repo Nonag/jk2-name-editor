@@ -9,6 +9,8 @@ const theme = {
     white: '#fff',
   },
 
+  fontFamily: 'Code New Roman',
+
   spacing: (factor: number) => 3 * factor,
 
   textShadow: (color?: string) =>

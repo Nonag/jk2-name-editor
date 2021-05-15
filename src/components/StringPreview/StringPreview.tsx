@@ -26,8 +26,8 @@ export const StringPreview: FC<StringPreviewProps> = ({
     <span css={[styles.stringPreview, css]} {...props}>
       {characters.map((character) => {
         const colorOverride = emotionCss({
-          color: character.textColor,
-          textShadow: theme.textShadow(character.shadowColor),
+          color: character.textRGBString,
+          textShadow: theme.textShadow(character.shadowRGBString),
         });
 
         return (

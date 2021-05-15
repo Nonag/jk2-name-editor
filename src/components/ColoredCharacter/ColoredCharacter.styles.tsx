@@ -5,7 +5,7 @@ import theme from 'src/theme/theme';
 const styles = {
   coloredCharacter: css({
     color: theme.colors.white,
-    textShadow: theme.textShadow('black'),
+    textShadow: theme.textShadow(theme.colors.shadow),
   }),
 };
 

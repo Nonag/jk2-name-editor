@@ -1,6 +1,10 @@
+import { RGBColor } from 'react-color';
+
 export interface ColoredCharacter {
   character: string;
-  shadowColor?: string;
-  textColor?: string;
+  shadowRGBColor: RGBColor;
+  shadowRGBString: string;
+  textRGBColor: RGBColor;
+  textRGBString: string;
   uuid: string;
 }

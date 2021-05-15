@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 
 import type { ColoredCharacter } from 'src/types';
+import { rgbColorToString } from 'src/utils';
 import theme from 'src/theme/theme';
 import Box from 'src/components/Box/Box';
 import ChatPreview from 'src/components/ChatPreview/ChatPreview';
@@ -15,6 +16,8 @@ import styles from './NameEditorView.styles';
 export const NameEditorView: FC = () => {
   const [characters, setCharacters] = useState<ColoredCharacter[]>([]);
   const [inputString, setInputString] = useState<string>('');
+  const defaultTextRGBColor = { a: 1, b: 255, g: 255, r: 255 };
+  const defaultShadowRGBColor = { a: 1, b: 96, g: 96, r: 96 };
 
   // Takes any string and returns an array with ColoredCharacter for each character in that string.
   const createColoredCharacters = (
@@ -22,6 +25,10 @@ export const NameEditorView: FC = () => {
   ): ColoredCharacter[] =>
     [...characterString].map((character) => ({
       character,
+      shadowRGBColor: defaultShadowRGBColor,
+      shadowRGBString: rgbColorToString(defaultShadowRGBColor),
+      textRGBColor: defaultTextRGBColor,
+      textRGBString: rgbColorToString(defaultTextRGBColor),
       uuid: uuid(),
     }));
 
@@ -66,7 +73,7 @@ export const NameEditorView: FC = () => {
   useEffect(() => {
     setInputString('Padawan');
     setCharacters(createColoredCharacters('Padawan'));
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div css={styles.nameEditorView}>
