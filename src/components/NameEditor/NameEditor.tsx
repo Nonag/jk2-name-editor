@@ -1,5 +1,11 @@
 /** @jsxImportSource @emotion/react */
-import type { ChangeEvent, FC, HTMLAttributes } from 'react';
+import type {
+  ChangeEvent,
+  FC,
+  HTMLAttributes,
+  KeyboardEvent,
+  MouseEvent,
+} from 'react';
 import React, { Fragment, useEffect, useState } from 'react';
 import type { ColorResult } from 'react-color';
 import { SketchPicker } from 'react-color';
@@ -65,6 +71,13 @@ export const StringEditor: FC<StringEditorProps> = ({
 
     onUpdate!(_coloredCharacters);
     setInputString(_inputString);
+  };
+
+  // Update selected character depending on the cursers position inside the StringInput.
+  const handleCharacterSelection = (
+    event: KeyboardEvent<HTMLInputElement> | MouseEvent<HTMLInputElement>,
+  ) => {
+    console.log(event.currentTarget.selectionStart);
   };
 
   // Toggle the selection of the clicked character.
@@ -139,7 +152,12 @@ export const StringEditor: FC<StringEditorProps> = ({
         );
       })}
 
-      <StringInput onChange={handleInputStringChange} value={inputString} />
+      <StringInput
+        onChange={handleInputStringChange}
+        onClick={handleCharacterSelection}
+        onKeyUp={handleCharacterSelection}
+        value={inputString}
+      />
 
       {selectedCharacter && (
         <SketchPicker
