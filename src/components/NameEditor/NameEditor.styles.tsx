@@ -3,11 +3,8 @@ import { css } from '@emotion/react/macro';
 import theme from 'src/theme/theme';
 
 const coloredCharacterSelected = css({
-  transition: 'background 0.2s ease, padding 0.2s ease, border 0.2s ease',
-  backgroundColor: theme.colors.background + 'aa',
-  padding: '0.1rem 0.3rem 0.1rem 0.2rem',
-  border: `1px solid ${theme.colors.border}`,
-  boxShadow: `1px 1px ${theme.colors.border}`,
+  transition: 'border 0.2s ease',
+  borderBottom: `3px solid ${theme.colors.border}`,
   cursor: 'pointer',
 });
 
@@ -19,15 +16,13 @@ const styles = {
 
   coloredCharacter: css({
     backgroundColor: theme.colors.background + '00',
-    padding: 0,
-    border: '1px solid transparent',
-    borderRadius: theme.borderRadius,
-    transition: 'background 0.2s ease, padding 0.2s ease, border 0.2s ease',
+    borderBottom: '3px solid transparent',
+    transition: 'border 0.2s ease',
 
     '&:hover': coloredCharacterSelected,
   }),
 
-  coloredCharacterSelected: coloredCharacterSelected,
+  coloredCharacterSelected,
 
   spaceIndicator: css({
     color: theme.colors.border,
