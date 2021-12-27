@@ -14,6 +14,12 @@ const styles = {
     fontSize: '2.5rem',
   }),
 
+  stringInput: css({
+    opacity: 0.2,
+    display: 'block',
+    pointerEvents: 'none',
+  }),
+
   coloredCharacter: css({
     backgroundColor: theme.colors.background + '00',
     borderBottom: '3px solid transparent',

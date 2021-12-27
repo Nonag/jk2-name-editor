@@ -6,7 +6,7 @@ import type {
   KeyboardEvent,
   MouseEvent,
 } from 'react';
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import type { ColorResult } from 'react-color';
 import { SketchPicker } from 'react-color';
 import type { SerializedStyles } from '@emotion/react';
@@ -29,9 +29,10 @@ export interface StringEditorProps extends HTMLAttributes<HTMLDivElement> {
 export const StringEditor: FC<StringEditorProps> = ({
   coloredCharacters,
   css,
-  onUpdate,
+  onUpdate = () => {},
   ...props
 }) => {
+  const stringInputRef = useRef<HTMLInputElement>(null);
   const [inputString, setInputString] = useState<string>('');
   const [selectedCharacter, setSelectedCharacter] = useState<
     ColoredCharacter | undefined
@@ -54,7 +55,7 @@ export const StringEditor: FC<StringEditorProps> = ({
 
     // Get the inserted sub-string of the new _input.
     const insertedString = isInsertion
-      ? _inputString.substr(cursorBefore, diffLength)
+      ? _inputString.substring(cursorBefore, cursorAfter)
       : undefined;
 
     if (isInsertion) {
@@ -69,28 +70,35 @@ export const StringEditor: FC<StringEditorProps> = ({
       _coloredCharacters.splice(cursorBefore, diffLength);
     }
 
-    onUpdate!(_coloredCharacters);
+    onUpdate(_coloredCharacters);
     setInputString(_inputString);
   };
 
-  // Update selected character depending on the cursers position inside the StringInput.
+  // Update selectedCharacter depending on the cursers position inside the StringInput.
   const handleCharacterSelection = (
     event: KeyboardEvent<HTMLInputElement> | MouseEvent<HTMLInputElement>,
   ) => {
-    console.log(event.currentTarget.selectionStart);
+    const cursorIndex = event.currentTarget.selectionStart;
+    const _selectedCharacter = cursorIndex
+      ? coloredCharacters[cursorIndex]
+      : coloredCharacters[0];
+
+    setSelectedCharacter(_selectedCharacter);
   };
 
-  // Toggle the selection of the clicked character.
-  const handleCharacterClick = (_character: ColoredCharacter) => {
-    const character = coloredCharacters.find(
-      (coloredCharacter) => coloredCharacter.uuid === _character.uuid,
-    );
+  // Update selectedCharacter and StringInput selection depending on the clicked character.
+  const handleCharacterClick = (character: ColoredCharacter) => {
+    if (!stringInputRef.current) return;
 
-    if (character?.uuid === selectedCharacter?.uuid) {
-      setSelectedCharacter(undefined);
-    } else {
-      setSelectedCharacter(character);
-    }
+    const cursorIndex = coloredCharacters.indexOf(character);
+    const _selectedCharacter = cursorIndex
+      ? coloredCharacters[cursorIndex]
+      : coloredCharacters[0];
+
+    stringInputRef.current.setSelectionRange(cursorIndex, cursorIndex);
+    stringInputRef.current.focus();
+
+    setSelectedCharacter(_selectedCharacter);
   };
 
   // Update the provided coloredCharacters and pass them to the 'onUpdate' callback.
@@ -111,7 +119,7 @@ export const StringEditor: FC<StringEditorProps> = ({
       }
     });
 
-    onUpdate!(_coloredCharacters);
+    onUpdate(_coloredCharacters);
   };
 
   // Use character property to generate initial input string.
@@ -153,9 +161,10 @@ export const StringEditor: FC<StringEditorProps> = ({
       })}
 
       <StringInput
+        css={styles.stringInput}
         onChange={handleInputStringChange}
-        onClick={handleCharacterSelection}
         onKeyUp={handleCharacterSelection}
+        ref={stringInputRef}
         value={inputString}
       />
 
