@@ -1,12 +1,12 @@
-import { css } from '@emotion/react/macro';
+import { css, keyframes } from '@emotion/react/macro';
 
 import theme from 'src/theme/theme';
 
-const coloredCharacterSelected = css({
-  transition: 'border 0.2s ease',
-  borderBottom: `3px solid ${theme.colors.border}`,
-  cursor: 'pointer',
-});
+const blink = keyframes`
+  50% {
+    border-color: transparent;
+  }
+`;
 
 const styles = {
   stringEditor: css({
@@ -15,20 +15,33 @@ const styles = {
   }),
 
   stringInput: css({
-    opacity: 0.2,
+    opacity: 0,
     display: 'block',
+    top: 0,
+    left: 0,
+    position: 'fixed',
     pointerEvents: 'none',
   }),
 
   coloredCharacter: css({
     backgroundColor: theme.colors.background + '00',
     borderBottom: '3px solid transparent',
-    transition: 'border 0.2s ease',
 
-    '&:hover': coloredCharacterSelected,
+    '&:hover': css({
+      background: theme.colors.background,
+      cursor: 'pointer',
+    }),
   }),
 
-  coloredCharacterSelected,
+  coloredCharacterSelected: css({
+    borderBottom: `3px solid ${theme.colors.border}`,
+  }),
+
+  hasFocus: css({
+    '&:not(:hover)': {
+      animation: `${blink} 0.8s step-start 0s infinite`,
+    },
+  }),
 
   spaceIndicator: css({
     color: theme.colors.border,

@@ -34,11 +34,15 @@ export const StringEditor: FC<StringEditorProps> = ({
 }) => {
   const stringInputRef = useRef<HTMLInputElement>(null);
   const [inputString, setInputString] = useState<string>('');
+  const [stringInputHasFocus, setStringInputHasFocus] =
+    useState<boolean>(false);
   const [selectedCharacter, setSelectedCharacter] = useState<
     ColoredCharacter | undefined
   >();
 
-  // Updates the inputString value while removing or inserting characters to the coloredCharacters state accordingly.
+  /**
+   * Updates the inputString value while removing or inserting characters to the coloredCharacters state accordingly.
+   */
   const handleInputStringChange = (event: ChangeEvent<HTMLInputElement>) => {
     const _coloredCharacters = [...coloredCharacters];
     const _inputString = event.target.value;
@@ -74,7 +78,9 @@ export const StringEditor: FC<StringEditorProps> = ({
     setInputString(_inputString);
   };
 
-  // Update selectedCharacter depending on the cursers position inside the StringInput.
+  /**
+   * Update selectedCharacter depending on the cursers position inside the StringInput.
+   */
   const handleCharacterSelection = (
     event: KeyboardEvent<HTMLInputElement> | MouseEvent<HTMLInputElement>,
   ) => {
@@ -86,7 +92,9 @@ export const StringEditor: FC<StringEditorProps> = ({
     setSelectedCharacter(_selectedCharacter);
   };
 
-  // Update selectedCharacter and StringInput selection depending on the clicked character.
+  /**
+   * Update selectedCharacter and StringInput selection depending on the clicked character.
+   */
   const handleCharacterClick = (character: ColoredCharacter) => {
     if (!stringInputRef.current) return;
 
@@ -101,8 +109,10 @@ export const StringEditor: FC<StringEditorProps> = ({
     setSelectedCharacter(_selectedCharacter);
   };
 
-  // Update the provided coloredCharacters and pass them to the 'onUpdate' callback.
-  // Also update the 'setSelectedCharacter' state in order for the color picker to work properly.
+  /**
+   * Update the provided coloredCharacters and pass them to the 'onUpdate' callback.
+   * Also update the 'setSelectedCharacter' state in order for the color picker to work properly.
+   */
   const handleColorUpdate = (color: ColorResult) => {
     const _coloredCharacters = coloredCharacters.map((coloredCharacter) => {
       if (coloredCharacter.uuid === selectedCharacter?.uuid) {
@@ -149,6 +159,7 @@ export const StringEditor: FC<StringEditorProps> = ({
                 css={[
                   styles.coloredCharacter,
                   isSelected ? styles.coloredCharacterSelected : emotionCss``,
+                  stringInputHasFocus ? styles.hasFocus : emotionCss``,
                   colorOverride,
                 ]}
                 onClick={() => handleCharacterClick(coloredCharacter)}
@@ -162,7 +173,9 @@ export const StringEditor: FC<StringEditorProps> = ({
 
       <StringInput
         css={styles.stringInput}
+        onBlur={() => setStringInputHasFocus(false)}
         onChange={handleInputStringChange}
+        onFocus={() => setStringInputHasFocus(true)}
         onKeyUp={handleCharacterSelection}
         ref={stringInputRef}
         value={inputString}
