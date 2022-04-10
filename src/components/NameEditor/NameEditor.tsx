@@ -7,6 +7,7 @@ import type {
   MouseEvent,
 } from 'react';
 import React, { Fragment, useEffect, useRef, useState } from 'react';
+import ClickAwayListener from 'react-click-away-listener';
 import type { ColorResult } from 'react-color';
 import { SketchPicker } from 'react-color';
 import type { SerializedStyles } from '@emotion/react';
@@ -141,48 +142,50 @@ export const StringEditor: FC<StringEditorProps> = ({
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <div css={[styles.stringEditor, css]} {...props}>
-      {coloredCharacters.map((coloredCharacter) => {
-        const isSelected = coloredCharacter.uuid === selectedCharacter?.uuid;
-        const isWhiteSpace = coloredCharacter.character === ' ';
+    <ClickAwayListener onClickAway={() => setSelectedCharacter(undefined)}>
+      <div css={[styles.stringEditor, css]} {...props}>
+        {coloredCharacters.map((coloredCharacter) => {
+          const isSelected = coloredCharacter.uuid === selectedCharacter?.uuid;
+          const isWhiteSpace = coloredCharacter.character === ' ';
 
-        return (
-          <Fragment key={coloredCharacter.uuid}>
-            {isWhiteSpace && <span css={styles.spaceIndicator}>&sdot;</span>}
+          return (
+            <Fragment key={coloredCharacter.uuid}>
+              {isWhiteSpace && <span css={styles.spaceIndicator}>&sdot;</span>}
 
-            {!isWhiteSpace && (
-              <Character
-                css={[
-                  styles.coloredCharacter,
-                  isSelected ? styles.coloredCharacterSelected : emotionCss``,
-                  stringInputHasFocus ? styles.hasFocus : emotionCss``,
-                ]}
-                onClick={() => handleCharacterClick(coloredCharacter)}
-                {...coloredCharacter}
-              />
-            )}
-          </Fragment>
-        );
-      })}
+              {!isWhiteSpace && (
+                <Character
+                  css={[
+                    styles.coloredCharacter,
+                    isSelected ? styles.coloredCharacterSelected : emotionCss``,
+                    stringInputHasFocus ? styles.hasFocus : emotionCss``,
+                  ]}
+                  onClick={() => handleCharacterClick(coloredCharacter)}
+                  {...coloredCharacter}
+                />
+              )}
+            </Fragment>
+          );
+        })}
 
-      <StringInput
-        css={styles.stringInput}
-        onBlur={() => setStringInputHasFocus(false)}
-        onChange={handleNameChange}
-        onFocus={() => setStringInputHasFocus(true)}
-        onKeyUp={handleCharacterSelection}
-        ref={stringInputRef}
-        value={playerName}
-      />
-
-      {selectedCharacter && (
-        <SketchPicker
-          css={styles.colorPicker}
-          color={selectedCharacter.textRGBColor}
-          onChange={(color) => handleColorUpdate(color)}
+        <StringInput
+          css={styles.stringInput}
+          onBlur={() => setStringInputHasFocus(false)}
+          onChange={handleNameChange}
+          onFocus={() => setStringInputHasFocus(true)}
+          onKeyUp={handleCharacterSelection}
+          ref={stringInputRef}
+          value={playerName}
         />
-      )}
-    </div>
+
+        {selectedCharacter && (
+          <SketchPicker
+            css={styles.colorPicker}
+            color={selectedCharacter.textRGBColor}
+            onChange={(color) => handleColorUpdate(color)}
+          />
+        )}
+      </div>
+    </ClickAwayListener>
   );
 };
 

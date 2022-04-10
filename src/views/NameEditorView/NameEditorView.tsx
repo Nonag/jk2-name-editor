@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 
 import type { ColoredCharacter } from 'src/types';
 import { createColoredCharacters } from 'src/utils';
-import theme from 'src/theme/theme';
 import ChatPreview from 'src/components/ChatPreview/ChatPreview';
 import NameEditor from 'src/components/NameEditor/NameEditor';
 import ScoreBoard from 'src/components/ScoreBoard/ScoreBoard';

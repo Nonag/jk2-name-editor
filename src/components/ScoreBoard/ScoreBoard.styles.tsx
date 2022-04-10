@@ -11,11 +11,12 @@ const styles = {
     padding: theme.spacing(4),
     borderCollapse: 'collapse',
 
-    '& th': {
+    'th, td': {
       textAlign: 'left',
+      padding: theme.spacing(3),
     },
 
-    '& tbody tr:first-child': {
+    'tbody tr:first-of-type': {
       backgroundColor: theme.colors.primary + '94',
     },
   }),

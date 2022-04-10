@@ -5,6 +5,7 @@ import theme from 'src/theme/theme';
 const styles = {
   nameEditorView: css({
     display: 'flex',
+    justifyContent: 'center',
   }),
 
   backgroundImg: css({
@@ -17,16 +18,22 @@ const styles = {
   }),
 
   contentContainer: css({
-    maxWidth: '100%',
+    maxWidth: `calc(100% - ${theme.spacing(10)}px)`,
     minHeight: '100vh',
-    marginRight: theme.spacing(10),
-    marginLeft: theme.spacing(10),
+    overflow: 'auto',
+    marginRight: theme.spacing(5),
+    marginLeft: theme.spacing(5),
     position: 'relative',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
     flexDirection: 'column',
     flexGrow: 1,
+
+    '@media (min-width: 940)': {
+      maxWidth: `calc(940px - ${theme.spacing(20)}px)`,
+      marginRight: theme.spacing(10),
+      marginLeft: theme.spacing(10),
+    },
   }),
 
   chat: css({
