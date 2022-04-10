@@ -14,7 +14,6 @@ import { css as emotionCss } from '@emotion/react/macro';
 
 import type { ColoredCharacter } from 'src/types';
 import { createColoredCharacters, rgbColorToString } from 'src/utils';
-import theme from 'src/theme/theme';
 import { ColoredCharacter as Character } from 'src/components/ColoredCharacter/ColoredCharacter';
 import StringInput from 'src/components/StringInput/StringInput';
 
@@ -33,7 +32,7 @@ export const StringEditor: FC<StringEditorProps> = ({
   ...props
 }) => {
   const stringInputRef = useRef<HTMLInputElement>(null);
-  const [inputString, setInputString] = useState<string>('');
+  const [playerName, setPlayerName] = useState<string>('');
   const [stringInputHasFocus, setStringInputHasFocus] =
     useState<boolean>(false);
   const [selectedCharacter, setSelectedCharacter] = useState<
@@ -41,25 +40,25 @@ export const StringEditor: FC<StringEditorProps> = ({
   >();
 
   /**
-   * Updates the inputString value while removing or inserting characters to the coloredCharacters state accordingly.
+   * Updates the playerName value while removing or inserting characters to the coloredCharacters state accordingly.
    */
-  const handleInputStringChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     const _coloredCharacters = [...coloredCharacters];
-    const _inputString = event.target.value;
+    const inputString = event.target.value;
     const cursorAfter = event.target.selectionStart!;
-    const isInsertion = _inputString.length > inputString.length;
+    const isInsertion = inputString.length > playerName.length;
 
     // The amount of characters that were inserted or deleted within a single value change.
     const diffLength = isInsertion
-      ? _inputString.length - inputString.length
-      : inputString.length - _inputString.length;
+      ? inputString.length - playerName.length
+      : playerName.length - inputString.length;
 
     // The cursor index before and after a deletion really is always the same, if you think of it.
     const cursorBefore = isInsertion ? cursorAfter - diffLength : cursorAfter;
 
     // Get the inserted sub-string of the new _input.
     const insertedString = isInsertion
-      ? _inputString.substring(cursorBefore, cursorAfter)
+      ? inputString.substring(cursorBefore, cursorAfter)
       : undefined;
 
     if (isInsertion) {
@@ -75,7 +74,7 @@ export const StringEditor: FC<StringEditorProps> = ({
     }
 
     onUpdate(_coloredCharacters);
-    setInputString(_inputString);
+    setPlayerName(inputString);
   };
 
   /**
@@ -138,34 +137,29 @@ export const StringEditor: FC<StringEditorProps> = ({
       (coloredCharacter) => coloredCharacter.character,
     );
 
-    setInputString(characters.join(''));
+    setPlayerName(characters.join(''));
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div css={[styles.stringEditor, css]} {...props}>
       {coloredCharacters.map((coloredCharacter) => {
         const isSelected = coloredCharacter.uuid === selectedCharacter?.uuid;
-        const colorOverride = emotionCss({
-          color: coloredCharacter.textRGBString,
-          textShadow: theme.textShadow(coloredCharacter.shadowRGBString),
-        });
+        const isWhiteSpace = coloredCharacter.character === ' ';
 
         return (
           <Fragment key={coloredCharacter.uuid}>
-            {coloredCharacter.character === ' ' ? (
-              <span css={styles.spaceIndicator}>&sdot;</span>
-            ) : (
+            {isWhiteSpace && <span css={styles.spaceIndicator}>&sdot;</span>}
+
+            {!isWhiteSpace && (
               <Character
                 css={[
                   styles.coloredCharacter,
                   isSelected ? styles.coloredCharacterSelected : emotionCss``,
                   stringInputHasFocus ? styles.hasFocus : emotionCss``,
-                  colorOverride,
                 ]}
                 onClick={() => handleCharacterClick(coloredCharacter)}
-              >
-                {coloredCharacter.character}
-              </Character>
+                {...coloredCharacter}
+              />
             )}
           </Fragment>
         );
@@ -174,11 +168,11 @@ export const StringEditor: FC<StringEditorProps> = ({
       <StringInput
         css={styles.stringInput}
         onBlur={() => setStringInputHasFocus(false)}
-        onChange={handleInputStringChange}
+        onChange={handleNameChange}
         onFocus={() => setStringInputHasFocus(true)}
         onKeyUp={handleCharacterSelection}
         ref={stringInputRef}
-        value={inputString}
+        value={playerName}
       />
 
       {selectedCharacter && (
