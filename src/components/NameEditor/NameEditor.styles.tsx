@@ -11,7 +11,7 @@ const blink = keyframes`
 const styles = {
   stringEditor: css({
     fontWeight: 'bold',
-    fontSize: '2.5rem',
+    fontSize: '2rem',
   }),
 
   stringInput: css({
@@ -48,7 +48,9 @@ const styles = {
   }),
 
   colorPicker: css({
+    textShadow: 'none',
     marginTop: theme.spacing(3),
+    position: 'absolute',
   }),
 };
 

@@ -17,29 +17,23 @@ const styles = {
   }),
 
   contentContainer: css({
-    width: '100vw',
+    maxWidth: '100%',
     minHeight: '100vh',
+    marginRight: theme.spacing(10),
+    marginLeft: theme.spacing(10),
     position: 'relative',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
-  }),
-
-  box: css({
-    backgroundColor: theme.colors.background + 'ed',
-    maxWidth: '70%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'column',
+    flexGrow: 1,
   }),
 
   chat: css({
     padding: theme.spacing(2),
     left: 0,
     bottom: 0,
-    position: 'absolute',
+    position: 'fixed',
   }),
 };
 

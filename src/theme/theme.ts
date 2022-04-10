@@ -5,6 +5,7 @@ const theme = {
     background: '#fefefe',
     border: '#8b8b8b',
     chat: '#01f101',
+    primary: '#2700ff',
     shadow: '#606060',
     white: '#fff',
   },

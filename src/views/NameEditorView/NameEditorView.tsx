@@ -5,9 +5,9 @@ import React, { useState } from 'react';
 import type { ColoredCharacter } from 'src/types';
 import { createColoredCharacters } from 'src/utils';
 import theme from 'src/theme/theme';
-import Box from 'src/components/Box/Box';
 import ChatPreview from 'src/components/ChatPreview/ChatPreview';
-import StringEditor from 'src/components/NameEditor/NameEditor';
+import NameEditor from 'src/components/NameEditor/NameEditor';
+import ScoreBoard from 'src/components/ScoreBoard/ScoreBoard';
 
 import styles from './NameEditorView.styles';
 
@@ -25,20 +25,19 @@ export const NameEditorView: FC = () => {
       />
 
       <div css={styles.contentContainer}>
-        <Box css={styles.box}>
-          <h1>Jedi Knight II Name Editor</h1>
-
-          <p>
-            Type in your desired name and modify each character's appearance in
-            the preview.
-          </p>
-
-          <StringEditor
-            coloredCharacters={characters}
-            onUpdate={setCharacters}
-            style={{ margin: theme.spacing(5) }}
-          />
-        </Box>
+        <ScoreBoard>
+          <tr>
+            <td>
+              <NameEditor
+                coloredCharacters={characters}
+                onUpdate={setCharacters}
+              />
+            </td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+        </ScoreBoard>
 
         <ChatPreview css={styles.chat} characters={characters} />
       </div>
