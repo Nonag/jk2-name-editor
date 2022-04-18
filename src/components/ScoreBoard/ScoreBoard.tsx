@@ -1,9 +1,17 @@
 /** @jsxImportSource @emotion/react */
 import type { FC, ReactNode } from 'react';
 import { SerializedStyles } from '@emotion/react';
-import { useTheme } from '@mui/material';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  useTheme,
+} from '@mui/material';
 
-import makeStyles from './ScoreBoard.styles';
+import makeStyles, { sx } from './ScoreBoard.styles';
 
 export interface ScoreBoardProps {
   children: ReactNode;
@@ -19,18 +27,24 @@ export const ScoreBoard: FC<ScoreBoardProps> = ({
   const styles = makeStyles(theme);
 
   return (
-    <table css={[styles.scoreBoard, css]} {...props}>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Score</th>
-          <th>Ping</th>
-          <th>Time</th>
-        </tr>
-      </thead>
+    <TableContainer
+      css={[styles.scoreBoard, css]}
+      sx={sx.tableContainer}
+      {...props}
+    >
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell component="th">Name</TableCell>
+            <TableCell component="th">Score</TableCell>
+            <TableCell component="th">Ping</TableCell>
+            <TableCell component="th">Time</TableCell>
+          </TableRow>
+        </TableHead>
 
-      <tbody>{children}</tbody>
-    </table>
+        <TableBody>{children}</TableBody>
+      </Table>
+    </TableContainer>
   );
 };
 

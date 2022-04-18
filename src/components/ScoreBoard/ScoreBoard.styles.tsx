@@ -3,15 +3,14 @@ import { Theme } from '@mui/material';
 
 const makeStyles = (theme: Theme) => ({
   scoreBoard: css({
-    color: theme.palette.common.white,
-    textShadow: theme.typography.textShadow(theme.palette.grey[700]),
-    fontSize: '2em',
-    width: '100%',
-    borderCollapse: 'collapse',
-
     'th, td': {
       textAlign: 'left',
+      minWidth: '130px',
       padding: theme.spacing(1),
+
+      '&:first-of-type': {
+        width: '100%',
+      },
     },
 
     'tbody tr:first-of-type': {
@@ -19,5 +18,19 @@ const makeStyles = (theme: Theme) => ({
     },
   }),
 });
+
+export const sx = {
+  tableContainer: (theme: Theme) => ({
+    width: '100%',
+
+    '& .MuiTableCell-root': {
+      color: 'common.white',
+      textShadow: theme.typography.textShadow(theme.palette.grey[700]),
+      fontSize: 'h4.fontSize',
+      lineHeight: 'normal',
+      border: 'none',
+    },
+  }),
+};
 
 export default makeStyles;

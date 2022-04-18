@@ -1,7 +1,15 @@
 /** @jsxImportSource @emotion/react */
 import type { FC } from 'react';
 import { useState } from 'react';
-import { Container, Grid, SxProps, Theme, useTheme } from '@mui/material';
+import {
+  Container,
+  Grid,
+  SxProps,
+  TableCell,
+  TableRow,
+  Theme,
+  useTheme,
+} from '@mui/material';
 
 import type { ColoredCharacter } from 'src/types';
 import { createColoredCharacters } from 'src/utils';
@@ -40,17 +48,17 @@ export const NameEditorView: FC<NameEditorViewProps> = ({
       <Grid container sx={{ position: 'relative' }}>
         <Grid item xs={12}>
           <ScoreBoard>
-            <tr>
-              <td>
+            <TableRow>
+              <TableCell>
                 <NameEditor
                   coloredCharacters={characters}
                   onUpdate={setCharacters}
                 />
-              </td>
-              <td>0</td>
-              <td>0</td>
-              <td>0</td>
-            </tr>
+              </TableCell>
+              <TableCell>0</TableCell>
+              <TableCell>0</TableCell>
+              <TableCell>0</TableCell>
+            </TableRow>
           </ScoreBoard>
         </Grid>
       </Grid>

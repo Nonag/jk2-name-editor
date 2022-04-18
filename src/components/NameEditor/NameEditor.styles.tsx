@@ -8,10 +8,7 @@ const blink = keyframes`
 `;
 
 const makeStyles = (theme: Theme) => ({
-  stringEditor: css({
-    fontWeight: 'bold',
-    fontSize: '2rem',
-  }),
+  stringEditor: css({}),
 
   stringInput: css({
     opacity: 0,
@@ -27,7 +24,7 @@ const makeStyles = (theme: Theme) => ({
     borderBottom: '3px solid transparent',
 
     '&:hover': css({
-      background: theme.palette.background.default,
+      background: theme.palette.background.default + '55',
       cursor: 'pointer',
     }),
   }),

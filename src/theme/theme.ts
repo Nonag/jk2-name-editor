@@ -15,7 +15,26 @@ declare module '@mui/material/styles' {
 }
 
 const theme = createTheme({
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: `
+        @font-face {
+          font-family: 'Ergoe Extrabold Condensed Regular';
+          font-style: normal;
+          font-display: swap;
+          font-weight: 400;
+          src: local('Ergoe Extrabold'), local('Ergoe-Extrabold'), url('/static/fonts/ergoe-extrabold-condensed-regular.ttf') format('truetype');
+        }
+      `,
+    },
+  },
+
   palette: {
+    background: {
+      default: '#ffffff',
+      paper: '#ffffff',
+    },
+
     primary: {
       main: '#2700ff',
     },
@@ -26,9 +45,9 @@ const theme = createTheme({
   },
 
   typography: {
-    fontFamily: 'Code New Roman',
+    fontFamily: '"Ergoe Extrabold Condensed Regular", Arial, sans-serif',
     textShadow: (color?: string) =>
-      color ? `0.05em 0.05em ${color}` : undefined,
+      color ? `0.075em 0.075em ${color}` : undefined,
   },
 });
 

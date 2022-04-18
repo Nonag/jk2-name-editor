@@ -3,7 +3,7 @@ import { Theme } from '@mui/material';
 
 const makeStyles = (theme: Theme) => ({
   chatPreview: css({
-    fontWeight: 'bold',
+    fontSize: theme.typography.pxToRem(18),
   }),
 
   colon: css({
