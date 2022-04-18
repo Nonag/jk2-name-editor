@@ -8,6 +8,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
   useTheme,
 } from '@mui/material';
 
@@ -32,6 +33,8 @@ export const ScoreBoard: FC<ScoreBoardProps> = ({
       sx={sx.tableContainer}
       {...props}
     >
+      <Typography sx={sx.tableHeading}>1st place (of 1) with 0</Typography>
+
       <Table>
         <TableHead>
           <TableRow>

@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { Theme } from '@mui/material';
+import { SxProps, Theme } from '@mui/material';
 
 const makeStyles = (theme: Theme) => ({
   scoreBoard: css({
@@ -19,8 +19,15 @@ const makeStyles = (theme: Theme) => ({
   }),
 });
 
-export const sx = {
+export const sx: Record<string, SxProps<Theme>> = {
+  tableHeading: (theme: Theme) => ({
+    fontSize: 'h4.fontSize',
+    textAlign: 'center',
+    textShadow: theme.typography.textShadow(theme.palette.grey[700]),
+  }),
+
   tableContainer: (theme: Theme) => ({
+    color: 'common.white',
     width: '100%',
 
     '& .MuiTableCell-root': {
