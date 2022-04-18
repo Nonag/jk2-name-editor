@@ -1,20 +1,19 @@
-import { css } from '@emotion/react/macro';
+import { css } from '@emotion/react';
+import { Theme } from '@mui/material';
 
-import theme from 'src/theme/theme';
-
-const styles = {
+const makeStyles = (theme: Theme) => ({
   chatPreview: css({
     fontWeight: 'bold',
   }),
 
   colon: css({
-    color: theme.colors.white,
+    color: theme.palette.common.white,
   }),
 
   chatMessage: css({
-    color: theme.colors.chat,
-    textShadow: theme.textShadow('black'),
+    color: theme.palette.text.chat,
+    textShadow: theme.typography.textShadow('black'),
   }),
-};
+});
 
-export default styles;
+export default makeStyles;

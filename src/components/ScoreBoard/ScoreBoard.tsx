@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import type { FC, ReactNode } from 'react';
-import React from 'react';
 import { SerializedStyles } from '@emotion/react';
+import { useTheme } from '@mui/material';
 
-import styles from './ScoreBoard.styles';
+import makeStyles from './ScoreBoard.styles';
 
 export interface ScoreBoardProps {
   children: ReactNode;
@@ -15,6 +15,9 @@ export const ScoreBoard: FC<ScoreBoardProps> = ({
   css,
   ...props
 }) => {
+  const theme = useTheme();
+  const styles = makeStyles(theme);
+
   return (
     <table css={[styles.scoreBoard, css]} {...props}>
       <thead>

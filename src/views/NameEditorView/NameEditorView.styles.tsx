@@ -1,13 +1,7 @@
-import { css } from '@emotion/react/macro';
+import { css } from '@emotion/react';
+import { Theme } from '@mui/material';
 
-import theme from 'src/theme/theme';
-
-const styles = {
-  nameEditorView: css({
-    display: 'flex',
-    justifyContent: 'center',
-  }),
-
+const makeStyles = (theme: Theme) => ({
   backgroundImg: css({
     objectFit: 'cover',
     width: '100%',
@@ -17,31 +11,12 @@ const styles = {
     position: 'absolute',
   }),
 
-  contentContainer: css({
-    maxWidth: `calc(100% - ${theme.spacing(10)}px)`,
-    minHeight: '100vh',
-    overflow: 'auto',
-    marginRight: theme.spacing(5),
-    marginLeft: theme.spacing(5),
-    position: 'relative',
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection: 'column',
-    flexGrow: 1,
-
-    '@media (min-width: 940)': {
-      maxWidth: `calc(940px - ${theme.spacing(20)}px)`,
-      marginRight: theme.spacing(10),
-      marginLeft: theme.spacing(10),
-    },
-  }),
-
   chat: css({
     padding: theme.spacing(2),
     left: 0,
     bottom: 0,
     position: 'fixed',
   }),
-};
+});
 
-export default styles;
+export default makeStyles;

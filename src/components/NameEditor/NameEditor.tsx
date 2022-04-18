@@ -6,19 +6,19 @@ import type {
   KeyboardEvent,
   MouseEvent,
 } from 'react';
-import React, { Fragment, useEffect, useRef, useState } from 'react';
-import ClickAwayListener from 'react-click-away-listener';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import type { ColorResult } from 'react-color';
 import { SketchPicker } from 'react-color';
 import type { SerializedStyles } from '@emotion/react';
 import { css as emotionCss } from '@emotion/react/macro';
+import { Box, ClickAwayListener, useTheme } from '@mui/material';
 
 import type { ColoredCharacter } from 'src/types';
 import { createColoredCharacters, rgbColorToString } from 'src/utils';
 import { ColoredCharacter as Character } from 'src/components/ColoredCharacter/ColoredCharacter';
 import StringInput from 'src/components/StringInput/StringInput';
 
-import styles from './NameEditor.styles';
+import makeStyles from './NameEditor.styles';
 
 export interface StringEditorProps extends HTMLAttributes<HTMLDivElement> {
   coloredCharacters: ColoredCharacter[];
@@ -32,6 +32,8 @@ export const StringEditor: FC<StringEditorProps> = ({
   onUpdate = () => {},
   ...props
 }) => {
+  const theme = useTheme();
+  const styles = makeStyles(theme);
   const stringInputRef = useRef<HTMLInputElement>(null);
   const [playerName, setPlayerName] = useState<string>('');
   const [stringInputHasFocus, setStringInputHasFocus] =
@@ -79,7 +81,7 @@ export const StringEditor: FC<StringEditorProps> = ({
   };
 
   /**
-   * Update selectedCharacter depending on the cursers position inside the StringInput.
+   * Update 'selectedCharacter' depending on the cursers position inside the 'StringInput'.
    */
   const handleCharacterSelection = (
     event: KeyboardEvent<HTMLInputElement> | MouseEvent<HTMLInputElement>,
@@ -93,7 +95,7 @@ export const StringEditor: FC<StringEditorProps> = ({
   };
 
   /**
-   * Update selectedCharacter and StringInput selection depending on the clicked character.
+   * Update 'selectedCharacter' and 'StringInput' selection depending on the clicked character.
    */
   const handleCharacterClick = (character: ColoredCharacter) => {
     if (!stringInputRef.current) return;
@@ -110,7 +112,7 @@ export const StringEditor: FC<StringEditorProps> = ({
   };
 
   /**
-   * Update the provided coloredCharacters and pass them to the 'onUpdate' callback.
+   * Update the provided 'coloredCharacters' and pass them to the 'onUpdate' callback.
    * Also update the 'setSelectedCharacter' state in order for the color picker to work properly.
    */
   const handleColorUpdate = (color: ColorResult) => {
@@ -132,7 +134,7 @@ export const StringEditor: FC<StringEditorProps> = ({
     onUpdate(_coloredCharacters);
   };
 
-  // Use character property to generate initial input string.
+  // Use 'coloredCharacters' property to generate initial input string.
   useEffect(() => {
     const characters = coloredCharacters.map(
       (coloredCharacter) => coloredCharacter.character,
@@ -143,7 +145,7 @@ export const StringEditor: FC<StringEditorProps> = ({
 
   return (
     <ClickAwayListener onClickAway={() => setSelectedCharacter(undefined)}>
-      <div css={[styles.stringEditor, css]} {...props}>
+      <Box css={[styles.stringEditor, css]} {...props}>
         {coloredCharacters.map((coloredCharacter) => {
           const isSelected = coloredCharacter.uuid === selectedCharacter?.uuid;
           const isWhiteSpace = coloredCharacter.character === ' ';
@@ -184,7 +186,7 @@ export const StringEditor: FC<StringEditorProps> = ({
             onChange={(color) => handleColorUpdate(color)}
           />
         )}
-      </div>
+      </Box>
     </ClickAwayListener>
   );
 };

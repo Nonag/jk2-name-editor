@@ -1,12 +1,12 @@
 /** @jsxImportSource @emotion/react */
 import type { FC, HTMLAttributes } from 'react';
-import React from 'react';
 import type { SerializedStyles } from '@emotion/react';
-import { css as emotionCss } from '@emotion/react/macro';
+import { css as emotionCss } from '@emotion/react';
+import { useTheme } from '@mui/material';
 
 import type { ColoredCharacter as ColoredCharacterInterface } from 'src/types';
 
-import styles from './ColoredCharacter.styles';
+import makeStyles from './ColoredCharacter.styles';
 
 export interface ColoredCharacterProps
   extends ColoredCharacterInterface,
@@ -24,6 +24,8 @@ export const ColoredCharacter: FC<ColoredCharacterProps> = ({
   textRGBString,
   ...props
 }) => {
+  const theme = useTheme();
+  const styles = makeStyles(theme);
   const characterColors = emotionCss({
     color: textRGBString,
     textShadow: shadowRGBString,

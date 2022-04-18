@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import type { FC } from 'react';
-import React from 'react';
 import type { Options } from '@emotion/cache';
 import createCache from '@emotion/cache';
-import { CacheProvider, Global, ThemeProvider } from '@emotion/react';
+import { CacheProvider, Global } from '@emotion/react';
+import { ThemeProvider } from '@mui/material/styles';
 
 import theme from 'src/theme/theme';
 import NameEditorView from 'src/views/NameEditorView/NameEditorView';
@@ -18,6 +18,7 @@ const cacheOptions: Options = {
 };
 
 const cssCache = createCache(cacheOptions);
+
 const App: FC = () => {
   return (
     <CacheProvider value={cssCache}>

@@ -1,6 +1,5 @@
 /** @jsxImportSource @emotion/react */
 import type { FC } from 'react';
-import React from 'react';
 import { SerializedStyles } from '@emotion/react';
 
 import type { ColoredCharacter } from 'src/types';

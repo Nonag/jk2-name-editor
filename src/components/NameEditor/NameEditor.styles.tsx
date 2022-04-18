@@ -1,6 +1,5 @@
-import { css, keyframes } from '@emotion/react/macro';
-
-import theme from 'src/theme/theme';
+import { css, keyframes } from '@emotion/react';
+import { Theme } from '@mui/material';
 
 const blink = keyframes`
   50% {
@@ -8,7 +7,7 @@ const blink = keyframes`
   }
 `;
 
-const styles = {
+const makeStyles = (theme: Theme) => ({
   stringEditor: css({
     fontWeight: 'bold',
     fontSize: '2rem',
@@ -24,17 +23,17 @@ const styles = {
   }),
 
   coloredCharacter: css({
-    backgroundColor: theme.colors.background + '00',
+    backgroundColor: theme.palette.background.default + '00',
     borderBottom: '3px solid transparent',
 
     '&:hover': css({
-      background: theme.colors.background,
+      background: theme.palette.background.default,
       cursor: 'pointer',
     }),
   }),
 
   coloredCharacterSelected: css({
-    borderBottom: `3px solid ${theme.colors.border}`,
+    borderBottom: `3px solid ${theme.palette.grey[100]}`,
   }),
 
   hasFocus: css({
@@ -44,14 +43,14 @@ const styles = {
   }),
 
   spaceIndicator: css({
-    color: theme.colors.border,
+    color: theme.palette.grey[100],
   }),
 
   colorPicker: css({
     textShadow: 'none',
-    marginTop: theme.spacing(3),
+    marginTop: theme.spacing(1),
     position: 'absolute',
   }),
-};
+});
 
-export default styles;
+export default makeStyles;

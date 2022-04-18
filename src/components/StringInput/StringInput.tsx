@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import type { InputHTMLAttributes } from 'react';
-import React, { forwardRef } from 'react';
+import { forwardRef } from 'react';
 
 import styles from './StringInput.styles';
 

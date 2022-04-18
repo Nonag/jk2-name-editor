@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import type { FC } from 'react';
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { Container, Grid, SxProps, Theme, useTheme } from '@mui/material';
 
 import type { ColoredCharacter } from 'src/types';
 import { createColoredCharacters } from 'src/utils';
@@ -8,39 +9,54 @@ import ChatPreview from 'src/components/ChatPreview/ChatPreview';
 import NameEditor from 'src/components/NameEditor/NameEditor';
 import ScoreBoard from 'src/components/ScoreBoard/ScoreBoard';
 
-import styles from './NameEditorView.styles';
+import makeStyles from './NameEditorView.styles';
 
-export const NameEditorView: FC = () => {
+interface NameEditorViewProps {
+  sx?: SxProps<Theme>;
+}
+
+export const NameEditorView: FC<NameEditorViewProps> = ({
+  sx = [],
+  ...props
+}) => {
+  const theme = useTheme();
+  const styles = makeStyles(theme);
   const initialCharacters = createColoredCharacters('Padawan');
   const [characters, setCharacters] =
     useState<ColoredCharacter[]>(initialCharacters);
 
   return (
-    <div css={styles.nameEditorView}>
+    <Container
+      maxWidth="md"
+      sx={[...(Array.isArray(sx) ? sx : [sx])]}
+      {...props}
+    >
       <img
         css={styles.backgroundImg}
         alt="bespin_streets"
         src="/static/images/editor_background.jpg"
       />
 
-      <div css={styles.contentContainer}>
-        <ScoreBoard>
-          <tr>
-            <td>
-              <NameEditor
-                coloredCharacters={characters}
-                onUpdate={setCharacters}
-              />
-            </td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-          </tr>
-        </ScoreBoard>
+      <Grid container sx={{ position: 'relative' }}>
+        <Grid item xs={12}>
+          <ScoreBoard>
+            <tr>
+              <td>
+                <NameEditor
+                  coloredCharacters={characters}
+                  onUpdate={setCharacters}
+                />
+              </td>
+              <td>0</td>
+              <td>0</td>
+              <td>0</td>
+            </tr>
+          </ScoreBoard>
+        </Grid>
+      </Grid>
 
-        <ChatPreview css={styles.chat} characters={characters} />
-      </div>
-    </div>
+      <ChatPreview css={styles.chat} characters={characters} />
+    </Container>
   );
 };
 
