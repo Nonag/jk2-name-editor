@@ -17,7 +17,7 @@ import ChatPreview from 'src/components/ChatPreview/ChatPreview';
 import NameEditor from 'src/components/NameEditor/NameEditor';
 import ScoreBoard from 'src/components/ScoreBoard/ScoreBoard';
 
-import makeStyles from './NameEditorView.styles';
+import makeStyles, { styles } from './NameEditorView.styles';
 
 interface NameEditorViewProps {
   sx?: SxProps<Theme>;
@@ -28,7 +28,7 @@ export const NameEditorView: FC<NameEditorViewProps> = ({
   ...props
 }) => {
   const theme = useTheme();
-  const styles = makeStyles(theme);
+  const cssStyles = makeStyles(theme);
   const initialCharacters = createColoredCharacters('Padawan');
   const [characters, setCharacters] =
     useState<ColoredCharacter[]>(initialCharacters);
@@ -36,18 +36,18 @@ export const NameEditorView: FC<NameEditorViewProps> = ({
   return (
     <Container
       maxWidth="md"
-      sx={[...(Array.isArray(sx) ? sx : [sx])]}
+      sx={[styles.nameEditorView, ...(Array.isArray(sx) ? sx : [sx])]}
       {...props}
     >
       <img
-        css={styles.backgroundImg}
+        css={cssStyles.backgroundImg}
         alt="bespin_streets"
         src="/static/images/editor_background-02.jpg"
       />
 
       <Grid container sx={{ position: 'relative' }}>
         <Grid item xs={12}>
-          <ScoreBoard>
+          <ScoreBoard sx={styles.scoreBoard}>
             <TableRow>
               <TableCell>
                 <NameEditor
@@ -63,7 +63,7 @@ export const NameEditorView: FC<NameEditorViewProps> = ({
         </Grid>
       </Grid>
 
-      <ChatPreview css={styles.chat} characters={characters} />
+      <ChatPreview sx={styles.chat} characters={characters} />
     </Container>
   );
 };

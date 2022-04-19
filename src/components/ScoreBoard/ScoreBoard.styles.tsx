@@ -1,8 +1,28 @@
-import { css } from '@emotion/react';
-import { SxProps, Theme } from '@mui/material';
+import { Theme } from '@mui/material';
 
-const makeStyles = (theme: Theme) => ({
-  scoreBoard: css({
+import { Styles } from 'src/theme/theme';
+
+export const styles: Styles = {
+  scoreBoard: (theme: Theme) => ({
+    color: 'common.white',
+    width: '100%',
+
+    '& .MuiTableCell-root': {
+      color: 'common.white',
+      textShadow: theme.typography.textShadow(theme.palette.grey[700]),
+      fontSize: 'h4.fontSize',
+      lineHeight: 'normal',
+      border: 'none',
+    },
+  }),
+
+  heading: (theme: Theme) => ({
+    fontSize: 'h4.fontSize',
+    textAlign: 'center',
+    textShadow: theme.typography.textShadow(theme.palette.grey[700]),
+  }),
+
+  tableContainer: (theme: Theme) => ({
     'th, td': {
       textAlign: 'left',
       minWidth: '130px',
@@ -17,27 +37,4 @@ const makeStyles = (theme: Theme) => ({
       backgroundColor: theme.palette.primary.main + '94',
     },
   }),
-});
-
-export const sx: Record<string, SxProps<Theme>> = {
-  tableHeading: (theme: Theme) => ({
-    fontSize: 'h4.fontSize',
-    textAlign: 'center',
-    textShadow: theme.typography.textShadow(theme.palette.grey[700]),
-  }),
-
-  tableContainer: (theme: Theme) => ({
-    color: 'common.white',
-    width: '100%',
-
-    '& .MuiTableCell-root': {
-      color: 'common.white',
-      textShadow: theme.typography.textShadow(theme.palette.grey[700]),
-      fontSize: 'h4.fontSize',
-      lineHeight: 'normal',
-      border: 'none',
-    },
-  }),
-};
-
-export default makeStyles;
+} as const;

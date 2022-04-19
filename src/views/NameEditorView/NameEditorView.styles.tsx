@@ -1,6 +1,19 @@
 import { css } from '@emotion/react';
 import { Theme } from '@mui/material';
 
+import { Styles } from 'src/theme/theme';
+
+export const styles: Styles = {
+  nameEditorView: (theme: Theme) => ({}),
+
+  chat: {
+    padding: 2,
+    left: 0,
+    bottom: 0,
+    position: 'fixed',
+  },
+} as const;
+
 const makeStyles = (theme: Theme) => ({
   backgroundImg: css({
     objectFit: 'cover',
@@ -9,13 +22,6 @@ const makeStyles = (theme: Theme) => ({
     top: 0,
     left: 0,
     position: 'absolute',
-  }),
-
-  chat: css({
-    padding: theme.spacing(2),
-    left: 0,
-    bottom: 0,
-    position: 'fixed',
   }),
 });
 

@@ -1,32 +1,34 @@
 /** @jsxImportSource @emotion/react */
 import type { FC } from 'react';
-import { SerializedStyles } from '@emotion/react';
-import { Box, useTheme } from '@mui/material';
+import { Box, SxProps, Theme, useTheme } from '@mui/material';
 
 import type { ColoredCharacter } from 'src/types';
 import StringPreview from 'src/components/StringPreview/StringPreview';
 
-import makeStyles from './ChatPreview.styles';
+import makeStyles, { styles } from './ChatPreview.styles';
 
 export interface ChatPreviewProps {
   characters: ColoredCharacter[];
-  css?: SerializedStyles | SerializedStyles[];
+  sx?: SxProps<Theme>;
 }
 
 export const ChatPreview: FC<ChatPreviewProps> = ({
   characters,
-  css,
+  sx = [],
   ...props
 }) => {
   const theme = useTheme();
-  const styles = makeStyles(theme);
+  const cssStyles = makeStyles(theme);
 
   return (
-    <Box css={[styles.chatPreview, css]} {...props}>
+    <Box
+      sx={[styles.chatPreview, ...(Array.isArray(sx) ? sx : [sx])]}
+      {...props}
+    >
       <StringPreview characters={characters} />
 
-      <span css={styles.colon}>: </span>
-      <span css={styles.chatMessage}>I have a bad feeling about this.</span>
+      <span css={cssStyles.colon}>: </span>
+      <span css={cssStyles.chatMessage}>I have a bad feeling about this.</span>
     </Box>
   );
 };

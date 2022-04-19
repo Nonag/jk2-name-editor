@@ -2,14 +2,14 @@
 import type { InputHTMLAttributes } from 'react';
 import { forwardRef } from 'react';
 
-import styles from './StringInput.styles';
+import cssStyles from './StringInput.styles';
 
 export interface StringInputProps
   extends InputHTMLAttributes<HTMLInputElement> {}
 
 export const StringInput = forwardRef<HTMLInputElement, StringInputProps>(
   (props, ref) => (
-    <input css={styles.stringInput} type="text" ref={ref} {...props} />
+    <input css={cssStyles.stringInput} type="text" ref={ref} {...props} />
   ),
 );
 

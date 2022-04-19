@@ -1,7 +1,7 @@
 import { css } from '@emotion/react/macro';
 
-const styles = {
+const cssStyles = {
   stringInput: css({}),
 };
 
-export default styles;
+export default cssStyles;

@@ -25,14 +25,14 @@ export const ColoredCharacter: FC<ColoredCharacterProps> = ({
   ...props
 }) => {
   const theme = useTheme();
-  const styles = makeStyles(theme);
+  const cssStyles = makeStyles(theme);
   const characterColors = emotionCss({
     color: textRGBString,
     textShadow: shadowRGBString,
   });
 
   return (
-    <span css={[styles.coloredCharacter, characterColors, css]} {...props}>
+    <span css={[cssStyles.coloredCharacter, characterColors, css]} {...props}>
       {character || children}
     </span>
   );

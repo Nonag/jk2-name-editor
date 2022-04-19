@@ -1,4 +1,5 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme, Theme } from '@mui/material';
+import { SystemStyleObject } from '@mui/system';
 
 declare module '@mui/material/styles' {
   interface TypeText {
@@ -13,6 +14,11 @@ declare module '@mui/material/styles' {
     textShadow?: (color?: string) => string | undefined;
   }
 }
+
+export type Styles = Record<
+  string,
+  SystemStyleObject<Theme> | ((theme: Theme) => SystemStyleObject<Theme>)
+>;
 
 const theme = createTheme({
   components: {

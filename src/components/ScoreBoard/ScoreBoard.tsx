@@ -1,53 +1,54 @@
 /** @jsxImportSource @emotion/react */
 import type { FC, ReactNode } from 'react';
-import { SerializedStyles } from '@emotion/react';
 import {
+  Box,
+  SxProps,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
+  Theme,
   Typography,
-  useTheme,
 } from '@mui/material';
 
-import makeStyles, { sx } from './ScoreBoard.styles';
+import { styles } from './ScoreBoard.styles';
 
 export interface ScoreBoardProps {
   children: ReactNode;
-  css?: SerializedStyles | SerializedStyles[];
+  sx?: SxProps<Theme>;
 }
 
 export const ScoreBoard: FC<ScoreBoardProps> = ({
   children,
-  css,
+  sx = [],
   ...props
 }) => {
-  const theme = useTheme();
-  const styles = makeStyles(theme);
-
   return (
-    <TableContainer
-      css={[styles.scoreBoard, css]}
-      sx={sx.tableContainer}
+    <Box
+      sx={[styles.scoreBoard, ...(Array.isArray(sx) ? sx : [sx])]}
       {...props}
     >
-      <Typography sx={sx.tableHeading}>1st place (of 1) with 0</Typography>
+      <Typography className="ScoreBoard-heading" sx={styles.heading}>
+        1st place (of 1) with 0
+      </Typography>
 
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell component="th">Name</TableCell>
-            <TableCell component="th">Score</TableCell>
-            <TableCell component="th">Ping</TableCell>
-            <TableCell component="th">Time</TableCell>
-          </TableRow>
-        </TableHead>
+      <TableContainer sx={styles.tableContainer}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell component="th">Name</TableCell>
+              <TableCell component="th">Score</TableCell>
+              <TableCell component="th">Ping</TableCell>
+              <TableCell component="th">Time</TableCell>
+            </TableRow>
+          </TableHead>
 
-        <TableBody>{children}</TableBody>
-      </Table>
-    </TableContainer>
+          <TableBody>{children}</TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
   );
 };
 

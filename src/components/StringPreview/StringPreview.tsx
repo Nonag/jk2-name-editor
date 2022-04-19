@@ -5,7 +5,7 @@ import { SerializedStyles } from '@emotion/react';
 import type { ColoredCharacter } from 'src/types';
 import { ColoredCharacter as Character } from 'src/components/ColoredCharacter/ColoredCharacter';
 
-import styles from './StringPreview.styles';
+import cssStyles from './StringPreview.styles';
 
 export interface StringPreviewProps {
   characters: ColoredCharacter[];
@@ -18,7 +18,7 @@ export const StringPreview: FC<StringPreviewProps> = ({
   ...props
 }) => {
   return (
-    <span css={[styles.stringPreview, css]} {...props}>
+    <span css={[cssStyles.stringPreview, css]} {...props}>
       {characters.map((character) => (
         <Character key={character.uuid} {...character} />
       ))}

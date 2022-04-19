@@ -33,7 +33,7 @@ export const StringEditor: FC<StringEditorProps> = ({
   ...props
 }) => {
   const theme = useTheme();
-  const styles = makeStyles(theme);
+  const cssStyles = makeStyles(theme);
   const stringInputRef = useRef<HTMLInputElement>(null);
   const [playerName, setPlayerName] = useState<string>('');
   const [stringInputHasFocus, setStringInputHasFocus] =
@@ -145,21 +145,25 @@ export const StringEditor: FC<StringEditorProps> = ({
 
   return (
     <ClickAwayListener onClickAway={() => setSelectedCharacter(undefined)}>
-      <Box css={[styles.stringEditor, css]} {...props}>
+      <Box css={[cssStyles.stringEditor, css]} {...props}>
         {coloredCharacters.map((coloredCharacter) => {
           const isSelected = coloredCharacter.uuid === selectedCharacter?.uuid;
           const isWhiteSpace = coloredCharacter.character === ' ';
 
           return (
             <Fragment key={coloredCharacter.uuid}>
-              {isWhiteSpace && <span css={styles.spaceIndicator}>&sdot;</span>}
+              {isWhiteSpace && (
+                <span css={cssStyles.spaceIndicator}>&sdot;</span>
+              )}
 
               {!isWhiteSpace && (
                 <Character
                   css={[
-                    styles.coloredCharacter,
-                    isSelected ? styles.coloredCharacterSelected : emotionCss``,
-                    stringInputHasFocus ? styles.hasFocus : emotionCss``,
+                    cssStyles.coloredCharacter,
+                    isSelected
+                      ? cssStyles.coloredCharacterSelected
+                      : emotionCss``,
+                    stringInputHasFocus ? cssStyles.hasFocus : emotionCss``,
                   ]}
                   onClick={() => handleCharacterClick(coloredCharacter)}
                   {...coloredCharacter}
@@ -170,7 +174,7 @@ export const StringEditor: FC<StringEditorProps> = ({
         })}
 
         <StringInput
-          css={styles.stringInput}
+          css={cssStyles.stringInput}
           onBlur={() => setStringInputHasFocus(false)}
           onChange={handleNameChange}
           onFocus={() => setStringInputHasFocus(true)}
@@ -181,7 +185,7 @@ export const StringEditor: FC<StringEditorProps> = ({
 
         {selectedCharacter && (
           <SketchPicker
-            css={styles.colorPicker}
+            css={cssStyles.colorPicker}
             color={selectedCharacter.textRGBColor}
             onChange={(color) => handleColorUpdate(color)}
           />
