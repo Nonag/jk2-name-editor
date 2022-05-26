@@ -19,13 +19,13 @@ import { ColoredCharacter as Character } from 'src/components/ColoredCharacter/C
 
 import makeStyles from './NameEditor.styles';
 
-export interface StringEditorProps extends HTMLAttributes<HTMLDivElement> {
+export interface NameEditorProps extends HTMLAttributes<HTMLDivElement> {
   coloredCharacters: ColoredCharacter[];
   css?: SerializedStyles | SerializedStyles[];
   onUpdate?: (coloredCharacters: ColoredCharacter[]) => void;
 }
 
-export const StringEditor: FC<StringEditorProps> = ({
+export const NameEditor: FC<NameEditorProps> = ({
   coloredCharacters,
   css,
   onUpdate = () => {},
@@ -144,7 +144,7 @@ export const StringEditor: FC<StringEditorProps> = ({
 
   return (
     <ClickAwayListener onClickAway={() => setSelectedCharacter(undefined)}>
-      <Box css={[cssStyles.stringEditor, css]} {...props}>
+      <Box css={[cssStyles.nameEditor, css]} {...props}>
         {coloredCharacters.map((coloredCharacter: ColoredCharacter) => {
           const isSelected = coloredCharacter.uuid === selectedCharacter?.uuid;
           const character = coloredCharacter.character;
@@ -187,4 +187,4 @@ export const StringEditor: FC<StringEditorProps> = ({
   );
 };
 
-export default StringEditor;
+export default NameEditor;

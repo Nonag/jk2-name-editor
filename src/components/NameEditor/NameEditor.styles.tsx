@@ -8,7 +8,7 @@ const blink = keyframes`
 `;
 
 const makeStyles = (theme: Theme) => ({
-  stringEditor: css({}),
+  nameEditor: css({}),
 
   stringInput: css({
     opacity: 0,
