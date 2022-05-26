@@ -34,13 +34,7 @@ const makeStyles = (theme: Theme) => ({
   }),
 
   hasFocus: css({
-    '&:not(:hover)': {
-      animation: `${blink} 0.8s step-start 0s infinite`,
-    },
-  }),
-
-  spaceIndicator: css({
-    color: theme.palette.grey[100],
+    animation: `${blink} 0.8s step-start 0s infinite`,
   }),
 
   colorPicker: css({

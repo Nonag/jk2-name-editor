@@ -6,7 +6,7 @@ import type {
   KeyboardEvent,
   MouseEvent,
 } from 'react';
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { ColorResult } from 'react-color';
 import { SketchPicker } from 'react-color';
 import type { SerializedStyles } from '@emotion/react';
@@ -146,30 +146,23 @@ export const StringEditor: FC<StringEditorProps> = ({
   return (
     <ClickAwayListener onClickAway={() => setSelectedCharacter(undefined)}>
       <Box css={[cssStyles.stringEditor, css]} {...props}>
-        {coloredCharacters.map((coloredCharacter) => {
+        {coloredCharacters.map((coloredCharacter: ColoredCharacter) => {
           const isSelected = coloredCharacter.uuid === selectedCharacter?.uuid;
-          const isWhiteSpace = coloredCharacter.character === ' ';
+          const character = coloredCharacter.character;
+          const isWhiteSpace = character === ' ';
 
           return (
-            <Fragment key={coloredCharacter.uuid}>
-              {isWhiteSpace && (
-                <span css={cssStyles.spaceIndicator}>&sdot;</span>
-              )}
-
-              {!isWhiteSpace && (
-                <Character
-                  css={[
-                    cssStyles.coloredCharacter,
-                    isSelected
-                      ? cssStyles.coloredCharacterSelected
-                      : emotionCss``,
-                    stringInputHasFocus ? cssStyles.hasFocus : emotionCss``,
-                  ]}
-                  onClick={() => handleCharacterClick(coloredCharacter)}
-                  {...coloredCharacter}
-                />
-              )}
-            </Fragment>
+            <Character
+              css={[
+                cssStyles.coloredCharacter,
+                isSelected ? cssStyles.coloredCharacterSelected : emotionCss``,
+                stringInputHasFocus ? cssStyles.hasFocus : emotionCss``,
+              ]}
+              key={coloredCharacter.uuid}
+              onClick={() => handleCharacterClick(coloredCharacter)}
+              {...coloredCharacter}
+              character={isWhiteSpace ? '⋅' : character} // Override character only after spreading `coloredCharacter`.
+            />
           );
         })}
 
