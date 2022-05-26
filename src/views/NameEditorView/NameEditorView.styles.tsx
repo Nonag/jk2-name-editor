@@ -6,6 +6,10 @@ import { Styles } from 'src/theme/theme';
 export const styles: Styles = {
   nameEditorView: (theme: Theme) => ({}),
 
+  clipboardIcon: {
+    color: 'white',
+  },
+
   chat: {
     padding: 2,
     left: 0,
