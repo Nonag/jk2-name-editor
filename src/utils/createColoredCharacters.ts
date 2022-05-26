@@ -11,7 +11,9 @@ export const defaultShadowRGBColor = { a: 1, b: 96, g: 96, r: 96 };
  *
  * @description Takes any string and returns an array with ColoredCharacter for each character in that string.
  */
-const createColoredCharacters = (characterString: string): ColoredCharacter[] =>
+export const createColoredCharacters = (
+  characterString: string,
+): ColoredCharacter[] =>
   [...characterString].map((character) => ({
     character,
     shadowRGBColor: defaultShadowRGBColor,

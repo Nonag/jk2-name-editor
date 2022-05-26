@@ -1,4 +1,2 @@
-import createColoredCharacters from './createColoredCharacters';
-import rgbColorToString from './rgbColorToString';
-
-export { createColoredCharacters, rgbColorToString };
+export * from './createColoredCharacters';
+export * from './rgbColorToString';
