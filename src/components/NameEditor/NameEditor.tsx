@@ -16,7 +16,6 @@ import { Box, ClickAwayListener, useTheme } from '@mui/material';
 import type { ColoredCharacter } from 'src/types';
 import { createColoredCharacters, rgbColorToString } from 'src/utils';
 import { ColoredCharacter as Character } from 'src/components/ColoredCharacter/ColoredCharacter';
-import StringInput from 'src/components/StringInput/StringInput';
 
 import makeStyles from './NameEditor.styles';
 
@@ -166,7 +165,7 @@ export const StringEditor: FC<StringEditorProps> = ({
           );
         })}
 
-        <StringInput
+        <input
           css={cssStyles.stringInput}
           onBlur={() => setStringInputHasFocus(false)}
           onChange={handleNameChange}
