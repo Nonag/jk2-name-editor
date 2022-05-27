@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 
 import type { ColoredCharacter } from 'src/types';
+import { hexColorToGameColor } from 'src/utils';
 
 import { styles } from './ClipboardDialog.styles';
 
@@ -42,7 +43,9 @@ export const ClipboardDialog: FC<ClipboardDialogProps> = ({
             <Typography component="code" sx={styles.code}>
               {coloredCharacters.map(
                 (coloredCharacter) =>
-                  `${coloredCharacter.textRGBString}${coloredCharacter.character}`,
+                  `${hexColorToGameColor(coloredCharacter.textHexColor)}${
+                    coloredCharacter.character
+                  }`,
               )}
             </Typography>
           </Typography>

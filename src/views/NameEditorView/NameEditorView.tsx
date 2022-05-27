@@ -13,7 +13,6 @@ import {
   useTheme,
 } from '@mui/material';
 
-import type { ColoredCharacter } from 'src/types';
 import { createColoredCharacters } from 'src/utils';
 import ChatPreview from 'src/components/ChatPreview/ChatPreview';
 import ClipboardDialog from 'src/components/ClipboardDialog/ClipboardDialog';
@@ -33,8 +32,7 @@ export const NameEditorView: FC<NameEditorViewProps> = ({
   const theme = useTheme();
   const cssStyles = makeStyles(theme);
   const initialCharacters = createColoredCharacters('Padawan');
-  const [characters, setCharacters] =
-    useState<ColoredCharacter[]>(initialCharacters);
+  const [characters, setCharacters] = useState(initialCharacters);
   const [showClipboardDialog, setShowClipboardDialog] = useState(false);
 
   return (

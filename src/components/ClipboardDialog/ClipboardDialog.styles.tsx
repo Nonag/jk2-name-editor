@@ -6,8 +6,8 @@ export const styles: Styles = {
   clipboardModal: (theme: Theme) => ({}),
 
   pre: (theme: Theme) => ({
-    overflow: 'auto',
     maxWidth: '100%',
+    overflow: 'auto',
   }),
 
   code: (theme: Theme) => ({

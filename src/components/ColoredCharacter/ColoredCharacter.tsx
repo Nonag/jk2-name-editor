@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import type { FC, HTMLAttributes } from 'react';
 import type { SerializedStyles } from '@emotion/react';
-import { css as emotionCss } from '@emotion/react';
 import { useTheme } from '@mui/material';
 
 import type { ColoredCharacter as ColoredCharacterInterface } from 'src/types';
@@ -18,22 +17,16 @@ export const ColoredCharacter: FC<ColoredCharacterProps> = ({
   character,
   children,
   css,
-  shadowRGBColor,
-  shadowRGBString,
-  textRGBColor,
-  textRGBString,
+  shadowHexColor,
+  textHexColor,
   ...props
 }) => {
   const theme = useTheme();
-  const cssStyles = makeStyles(theme);
-  const characterColors = emotionCss({
-    color: textRGBString,
-    textShadow: shadowRGBString,
-  });
+  const cssStyles = makeStyles(theme, { shadowHexColor, textHexColor });
 
   return (
-    <span css={[cssStyles.coloredCharacter, characterColors, css]} {...props}>
-      {character || children}
+    <span css={[cssStyles.coloredCharacter, css]} {...props}>
+      {children || character}
     </span>
   );
 };

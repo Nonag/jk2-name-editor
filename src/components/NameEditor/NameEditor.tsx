@@ -12,9 +12,10 @@ import { SketchPicker } from 'react-color';
 import type { SerializedStyles } from '@emotion/react';
 import { css as emotionCss } from '@emotion/react/macro';
 import { Box, ClickAwayListener, useTheme } from '@mui/material';
+import chroma from 'chroma-js';
 
 import type { ColoredCharacter } from 'src/types';
-import { createColoredCharacters, rgbColorToString } from 'src/utils';
+import { createColoredCharacters } from 'src/utils';
 import { ColoredCharacter as Character } from 'src/components/ColoredCharacter/ColoredCharacter';
 
 import makeStyles from './NameEditor.styles';
@@ -34,9 +35,8 @@ export const NameEditor: FC<NameEditorProps> = ({
   const theme = useTheme();
   const cssStyles = makeStyles(theme);
   const stringInputRef = useRef<HTMLInputElement>(null);
-  const [playerName, setPlayerName] = useState<string>('');
-  const [stringInputHasFocus, setStringInputHasFocus] =
-    useState<boolean>(false);
+  const [playerName, setPlayerName] = useState('');
+  const [stringInputHasFocus, setStringInputHasFocus] = useState(false);
   const [selectedCharacter, setSelectedCharacter] = useState<
     ColoredCharacter | undefined
   >();
@@ -58,7 +58,7 @@ export const NameEditor: FC<NameEditorProps> = ({
     // The cursor index before and after a deletion really is always the same, if you think of it.
     const cursorBefore = isInsertion ? cursorAfter - diffLength : cursorAfter;
 
-    // Get the inserted sub-string of the new _input.
+    // Get the inserted sub-string of the new inputString.
     const insertedString = isInsertion
       ? inputString.substring(cursorBefore, cursorAfter)
       : undefined;
@@ -117,10 +117,11 @@ export const NameEditor: FC<NameEditorProps> = ({
   const handleColorUpdate = (color: ColorResult) => {
     const _coloredCharacters = coloredCharacters.map((coloredCharacter) => {
       if (coloredCharacter.uuid === selectedCharacter?.uuid) {
-        const updatedCharacter = {
+        const updatedCharacter: ColoredCharacter = {
           ...coloredCharacter,
-          textRGBColor: color.rgb,
-          textRGBString: rgbColorToString(color.rgb),
+          textHexColor: chroma(color.hex)
+            .alpha(color.rgb.a || 1)
+            .hex(),
         };
 
         setSelectedCharacter(updatedCharacter);

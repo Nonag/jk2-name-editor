@@ -1,10 +1,16 @@
 import { css } from '@emotion/react';
 import { Theme } from '@mui/material';
 
-const makeStyles = (theme: Theme) => ({
+const makeStyles = (
+  theme: Theme,
+  {
+    shadowHexColor = theme.palette.grey[700],
+    textHexColor = theme.palette.common.white,
+  }: { shadowHexColor: string; textHexColor: string },
+) => ({
   coloredCharacter: css({
-    color: theme.palette.common.white,
-    textShadow: theme.typography.textShadow(theme.palette.grey[700]),
+    color: textHexColor,
+    textShadow: theme.typography.textShadow(shadowHexColor),
     minWidth: '0.315em', // For consecutive space characters.
     display: 'inline-block',
   }),

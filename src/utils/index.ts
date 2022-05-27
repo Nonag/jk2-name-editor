@@ -1,2 +1,2 @@
 export * from './createColoredCharacters';
-export * from './rgbColorToString';
+export * from './hexColorToGameColor';
