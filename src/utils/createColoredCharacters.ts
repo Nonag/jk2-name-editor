@@ -17,6 +17,7 @@ export const createColoredCharacters = (
     character,
     shadowHexColor: defaultShadowHexColor,
     textHexColor: defaultTextHexColor,
+    touched: false,
     uuid: uuid(),
   }));
 

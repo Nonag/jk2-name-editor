@@ -39,9 +39,13 @@ export const ScoreBoard: FC<ScoreBoardProps> = ({
           <TableHead>
             <TableRow>
               <TableCell component="th">Name</TableCell>
+
               <TableCell component="th">Score</TableCell>
+
               <TableCell component="th">Ping</TableCell>
+
               <TableCell component="th">Time</TableCell>
+
               <TableCell component="th">Clipboard</TableCell>
             </TableRow>
           </TableHead>

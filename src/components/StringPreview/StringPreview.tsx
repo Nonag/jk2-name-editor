@@ -17,11 +17,29 @@ export const StringPreview: FC<StringPreviewProps> = ({
   css,
   ...props
 }) => {
+  let previousCharacter: ColoredCharacter | undefined;
+
   return (
     <span css={[cssStyles.stringPreview, css]} {...props}>
-      {characters.map((character) => (
-        <Character key={character.uuid} {...character} />
-      ))}
+      {characters.map((coloredCharacter) => {
+        // If the current coloredCharacter was not touched and has no own colors,
+        // use the previousCharacter's colors, if there is one.
+        const previewCharacter: ColoredCharacter = {
+          ...coloredCharacter,
+          shadowHexColor:
+            coloredCharacter.touched || !previousCharacter
+              ? coloredCharacter.shadowHexColor
+              : previousCharacter.shadowHexColor,
+          textHexColor:
+            coloredCharacter.touched || !previousCharacter
+              ? coloredCharacter.textHexColor
+              : previousCharacter.textHexColor,
+        };
+
+        if (coloredCharacter.touched) previousCharacter = coloredCharacter;
+
+        return <Character key={coloredCharacter.uuid} {...previewCharacter} />;
+      })}
     </span>
   );
 };

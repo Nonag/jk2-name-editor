@@ -57,9 +57,13 @@ export const NameEditorView: FC<NameEditorViewProps> = ({
                   onUpdate={setCharacters}
                 />
               </TableCell>
+
               <TableCell>0</TableCell>
+
               <TableCell>0</TableCell>
+
               <TableCell>0</TableCell>
+
               <TableCell>
                 <IconButton onClick={() => setShowClipboardDialog(true)}>
                   <ClipboardIcon sx={styles.clipboardIcon} />

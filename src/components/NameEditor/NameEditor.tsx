@@ -41,6 +41,8 @@ export const NameEditor: FC<NameEditorProps> = ({
     ColoredCharacter | undefined
   >();
 
+  let previousCharacter: ColoredCharacter | undefined;
+
   /**
    * Updates the playerName value while removing or inserting characters to the coloredCharacters state accordingly.
    */
@@ -80,7 +82,7 @@ export const NameEditor: FC<NameEditorProps> = ({
   };
 
   /**
-   * Update 'selectedCharacter' depending on the cursers position inside the 'StringInput'.
+   * Update 'selectedCharacter' depending on the cursors position inside the input element.
    */
   const handleCharacterSelection = (
     event: KeyboardEvent<HTMLInputElement> | MouseEvent<HTMLInputElement>,
@@ -94,21 +96,22 @@ export const NameEditor: FC<NameEditorProps> = ({
   };
 
   /**
-   * Update 'selectedCharacter' and 'StringInput' selection depending on the clicked character.
+   * Update 'selectedCharacter' and the input element selection depending on the clicked character.
    */
-  const handleCharacterClick = (character: ColoredCharacter) => {
-    if (!stringInputRef.current) return;
+  const handleCharacterClick =
+    (character: ColoredCharacter) => (event: MouseEvent) => {
+      if (!stringInputRef.current) return;
 
-    const cursorIndex = coloredCharacters.indexOf(character);
-    const _selectedCharacter = cursorIndex
-      ? coloredCharacters[cursorIndex]
-      : coloredCharacters[0];
+      const cursorIndex = coloredCharacters.indexOf(character);
+      const _selectedCharacter = cursorIndex
+        ? coloredCharacters[cursorIndex]
+        : coloredCharacters[0];
 
-    stringInputRef.current.setSelectionRange(cursorIndex, cursorIndex);
-    stringInputRef.current.focus();
+      stringInputRef.current.setSelectionRange(cursorIndex, cursorIndex);
+      stringInputRef.current.focus();
 
-    setSelectedCharacter(_selectedCharacter);
-  };
+      setSelectedCharacter(_selectedCharacter);
+    };
 
   /**
    * Update the provided 'coloredCharacters' and pass them to the 'onUpdate' callback.
@@ -122,6 +125,7 @@ export const NameEditor: FC<NameEditorProps> = ({
           textHexColor: chroma(color.hex)
             .alpha(color.rgb.a || 1)
             .hex(),
+          touched: true,
         };
 
         setSelectedCharacter(updatedCharacter);
@@ -163,8 +167,26 @@ export const NameEditor: FC<NameEditorProps> = ({
       >
         {coloredCharacters.map((coloredCharacter: ColoredCharacter) => {
           const isSelected = coloredCharacter.uuid === selectedCharacter?.uuid;
-          const character = coloredCharacter.character;
-          const isWhiteSpace = character === ' ';
+
+          // If the current coloredCharacter was not touched and has no own colors,
+          // use the previousCharacter's colors, if there is one.
+          const previewCharacter: ColoredCharacter = {
+            ...coloredCharacter,
+            character:
+              coloredCharacter.character === ' '
+                ? '⋅'
+                : coloredCharacter.character,
+            shadowHexColor:
+              coloredCharacter.touched || !previousCharacter
+                ? coloredCharacter.shadowHexColor
+                : previousCharacter.shadowHexColor,
+            textHexColor:
+              coloredCharacter.touched || !previousCharacter
+                ? coloredCharacter.textHexColor
+                : previousCharacter.textHexColor,
+          };
+
+          if (coloredCharacter.touched) previousCharacter = coloredCharacter;
 
           return (
             <Character
@@ -174,12 +196,8 @@ export const NameEditor: FC<NameEditorProps> = ({
                 stringInputHasFocus ? cssStyles.hasFocus : emotionCss``,
               ]}
               key={coloredCharacter.uuid}
-              onClick={(event) => {
-                event.stopPropagation();
-                handleCharacterClick(coloredCharacter);
-              }}
-              {...coloredCharacter}
-              character={isWhiteSpace ? '⋅' : character} // Override character only after spreading `coloredCharacter`.
+              onClick={handleCharacterClick(coloredCharacter)}
+              {...previewCharacter}
             />
           );
         })}
