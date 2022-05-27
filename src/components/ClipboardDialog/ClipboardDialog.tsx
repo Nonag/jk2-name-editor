@@ -1,12 +1,16 @@
 /** @jsxImportSource @emotion/react */
-import type { FC } from 'react';
-import type { DialogProps, Theme } from '@mui/material';
+import type { FC, MouseEvent } from 'react';
+import { useState } from 'react';
+import { ContentCopy as CopyIcon } from '@mui/icons-material';
+import type { DialogProps } from '@mui/material';
 import {
   Box,
   Dialog,
   DialogContent,
   DialogContentText,
   DialogTitle,
+  IconButton,
+  Snackbar,
   Typography,
 } from '@mui/material';
 
@@ -24,6 +28,38 @@ export const ClipboardDialog: FC<ClipboardDialogProps> = ({
   sx = [],
   ...props
 }) => {
+  const [showNotice, setShowNotice] = useState(false);
+  const colorCodedPlayerName = coloredCharacters
+    .map(
+      (coloredCharacter: ColoredCharacter) =>
+        `${
+          coloredCharacter.touched
+            ? hexColorToGameColor(coloredCharacter.textHexColor)
+            : ''
+        }${coloredCharacter.character}`,
+    )
+    .join('');
+
+  const colorCodedPlayerNameShortened = coloredCharacters
+    .map(
+      (coloredCharacter: ColoredCharacter) =>
+        `${
+          coloredCharacter.touched
+            ? hexColorToGameColor(coloredCharacter.textHexColor, true)
+            : ''
+        }${coloredCharacter.character}`,
+    )
+    .join('');
+
+  /**
+   * Copy name to clipboard and show notice.
+   */
+  const handleCopyToClipboard =
+    (colorCodedName: string) => (event: MouseEvent) => {
+      setShowNotice(true);
+      navigator.clipboard.writeText(colorCodedName);
+    };
+
   return (
     <Dialog {...props}>
       <Box sx={[styles.ClipboardDialog, ...(Array.isArray(sx) ? sx : [sx])]}>
@@ -39,18 +75,48 @@ export const ClipboardDialog: FC<ClipboardDialogProps> = ({
             Click the icon next to the string to copy the name to your clipboard
           </DialogContentText>
 
-          <Typography component="pre" sx={styles.pre}>
-            <Typography component="code" sx={styles.code}>
-              {coloredCharacters.map(
-                (coloredCharacter) =>
-                  `${hexColorToGameColor(coloredCharacter.textHexColor)}${
-                    coloredCharacter.character
-                  }`,
-              )}
+          <DialogContentText variant="body2">
+            Precise hex codes {colorCodedPlayerName.length} / 36
+          </DialogContentText>
+
+          <Box sx={{ alignItems: 'center', display: 'flex' }}>
+            <Typography component="pre" sx={styles.pre}>
+              <Typography component="code" sx={styles.code}>
+                {colorCodedPlayerName}
+              </Typography>
             </Typography>
-          </Typography>
+
+            <IconButton onClick={handleCopyToClipboard(colorCodedPlayerName)}>
+              <CopyIcon />
+            </IconButton>
+          </Box>
+
+          <DialogContentText variant="body2">
+            Shortened hex codes {colorCodedPlayerNameShortened.length} / 36
+          </DialogContentText>
+
+          <Box sx={{ alignItems: 'center', display: 'flex' }}>
+            <Typography component="pre" sx={styles.pre}>
+              <Typography component="code" sx={styles.code}>
+                {colorCodedPlayerNameShortened}
+              </Typography>
+            </Typography>
+
+            <IconButton
+              onClick={handleCopyToClipboard(colorCodedPlayerNameShortened)}
+            >
+              <CopyIcon />
+            </IconButton>
+          </Box>
         </DialogContent>
       </Box>
+
+      <Snackbar
+        open={showNotice}
+        onClose={() => setShowNotice(false)}
+        autoHideDuration={2000}
+        message="Copied to clipboard"
+      />
     </Dialog>
   );
 };
