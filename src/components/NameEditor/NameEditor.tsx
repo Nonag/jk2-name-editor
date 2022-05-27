@@ -134,6 +134,17 @@ export const NameEditor: FC<NameEditorProps> = ({
     onUpdate(_coloredCharacters);
   };
 
+  /**
+   * When focusing the input, use the cursor index to select a coloredCharacter.
+   * This is especially useful when the input element gained focus without actually clicking on a character.
+   */
+  const handleInputFocus = () => {
+    const cursorIndex = stringInputRef.current?.selectionStart;
+
+    setSelectedCharacter(coloredCharacters[cursorIndex || 0]);
+    setStringInputHasFocus(true);
+  };
+
   // Use 'coloredCharacters' property to generate initial input string.
   useEffect(() => {
     const characters = coloredCharacters.map(
@@ -145,7 +156,11 @@ export const NameEditor: FC<NameEditorProps> = ({
 
   return (
     <ClickAwayListener onClickAway={() => setSelectedCharacter(undefined)}>
-      <Box css={[cssStyles.nameEditor, css]} {...props}>
+      <Box
+        css={[cssStyles.nameEditor, css]}
+        onClick={() => stringInputRef.current?.focus()}
+        {...props}
+      >
         {coloredCharacters.map((coloredCharacter: ColoredCharacter) => {
           const isSelected = coloredCharacter.uuid === selectedCharacter?.uuid;
           const character = coloredCharacter.character;
@@ -159,29 +174,49 @@ export const NameEditor: FC<NameEditorProps> = ({
                 stringInputHasFocus ? cssStyles.hasFocus : emotionCss``,
               ]}
               key={coloredCharacter.uuid}
-              onClick={() => handleCharacterClick(coloredCharacter)}
+              onClick={(event) => {
+                event.stopPropagation();
+                handleCharacterClick(coloredCharacter);
+              }}
               {...coloredCharacter}
               character={isWhiteSpace ? '⋅' : character} // Override character only after spreading `coloredCharacter`.
             />
           );
         })}
 
+        {stringInputRef.current?.selectionEnd === coloredCharacters.length && (
+          <Character // Dummy character to mimic a blinking cursor when the input is focused but no character selected.
+            css={[
+              cssStyles.coloredCharacter,
+              stringInputHasFocus
+                ? cssStyles.coloredCharacterSelected
+                : emotionCss``,
+              stringInputHasFocus ? cssStyles.hasFocus : emotionCss``,
+            ]}
+            {...createColoredCharacters('')[0]}
+          >
+            &nbsp;
+          </Character>
+        )}
+
         <input
           css={cssStyles.stringInput}
           onBlur={() => setStringInputHasFocus(false)}
           onChange={handleNameChange}
-          onFocus={() => setStringInputHasFocus(true)}
+          onFocus={handleInputFocus}
           onKeyUp={handleCharacterSelection}
           ref={stringInputRef}
           value={playerName}
         />
 
         {selectedCharacter && (
-          <SketchPicker
-            css={cssStyles.colorPicker}
-            color={selectedCharacter.textRGBColor}
-            onChange={(color) => handleColorUpdate(color)}
-          />
+          <Box onClick={(event) => event.stopPropagation()}>
+            <SketchPicker
+              css={cssStyles.colorPicker}
+              color={selectedCharacter.textHexColor}
+              onChange={(color) => handleColorUpdate(color)}
+            />
+          </Box>
         )}
       </Box>
     </ClickAwayListener>
