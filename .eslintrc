@@ -1,0 +1,60 @@
+{
+  "extends": ["react-app"],
+  "overrides": [
+    {
+      "files": ["src/*", "*.styles.tsx"],
+      "rules": {
+        "sort-keys-fix/sort-keys-fix": "off"
+      }
+    },
+    {
+      "files": ["src/theme/*", "*.styles.tsx"],
+      "rules": {
+        "prettier/prettier": ["warn", { "quoteProps": "as-needed" }]
+      }
+    }
+  ],
+  "plugins": ["prettier", "simple-import-sort", "sort-keys-fix"],
+  "root": true,
+  "rules": {
+    "import/first": "error",
+    "import/newline-after-import": "error",
+    "import/no-duplicates": "error",
+    "prettier/prettier": "warn",
+    "simple-import-sort/imports": [
+      "error",
+      {
+        "groups": [
+          // External Packages.
+          // Packages related to `react` come first then
+          // packages that start with a letter or `@` followed by a letter.
+          ["^react", "^@?react", "^@?\\w"],
+          // Internal packages.
+          [
+            "^src/",
+            "^src/types/",
+            "^src/utils/",
+            "^src/hooks/",
+            "^src/services/",
+            "^src/contexts/",
+            "^src/theme/",
+            "^src/layouts/",
+            "^src/views/",
+            "^src/components/"
+          ],
+          // Parent imports. Put `..` last.
+          ["^\\.\\.(?!/?$)", "^\\.\\./?$"],
+          // Other relative imports. Put same-folder imports and `.` last.
+          ["^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$"],
+          // Assets and style imports.
+          ["^\\$assets", "^.+\\.s?css$", "^.+\\.styles$"]
+        ]
+      }
+    ],
+    "sort-keys-fix/sort-keys-fix": [
+      "error",
+      "asc",
+      { "caseSensitive": false, "natural": false }
+    ]
+  }
+}
