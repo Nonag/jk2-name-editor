@@ -35,6 +35,25 @@ export const NameEditorView: FC<NameEditorViewProps> = ({
   const [characters, setCharacters] = useState(initialCharacters);
   const [showClipboardDialog, setShowClipboardDialog] = useState(false);
 
+  /**
+   * Open the clip board dialog and send the player name to the server.
+   */
+  const handleOpenClipboardDialog = () => {
+    const requestOptions = {
+      body: JSON.stringify({
+        playerName: characters.map((character) => character.character).join(''),
+      }),
+      headers: { 'Content-Type': 'application/json' },
+      method: 'POST',
+    };
+
+    fetch(process.env.REACT_APP_POST_PLAYER_NAME!, requestOptions).catch(() =>
+      console.warn('Player name was not submitted.'),
+    );
+
+    setShowClipboardDialog(true);
+  };
+
   return (
     <Container
       maxWidth="md"
@@ -65,7 +84,7 @@ export const NameEditorView: FC<NameEditorViewProps> = ({
               <TableCell>0</TableCell>
 
               <TableCell>
-                <IconButton onClick={() => setShowClipboardDialog(true)}>
+                <IconButton onClick={handleOpenClipboardDialog}>
                   <ClipboardIcon sx={styles.clipboardIcon} />
                 </IconButton>
               </TableCell>
