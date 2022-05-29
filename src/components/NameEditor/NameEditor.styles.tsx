@@ -39,10 +39,17 @@ const makeStyles = (theme: Theme) => ({
     animation: `${blink} 0.8s step-start 0s infinite`,
   }),
 
+  colorPickerWrapper: css({
+    width: '300px',
+    marginTop: theme.spacing(2),
+    position: 'absolute',
+  }),
+
   colorPicker: css({
     textShadow: 'none',
-    marginTop: theme.spacing(1),
-    position: 'absolute',
+    width: 'auto !important', // Important is needed to override package inline styles.
+    padding: `${theme.spacing(1, 1, 0)} !important`, // Important is needed to override package inline styles.
+    boxShadow: 'none !important', // Important is needed to override package inline styles.
   }),
 });
 

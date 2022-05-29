@@ -5,7 +5,7 @@ import { Styles } from 'src/theme/theme';
 
 export const styles: Styles = {
   chatPreview: (theme: Theme) => ({
-    fontSize: theme.typography.pxToRem(18),
+    fontSize: theme.typography.pxToRem(22),
   }),
 } as const;
 

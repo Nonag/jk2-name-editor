@@ -11,11 +11,15 @@ import type { ColorResult } from 'react-color';
 import { SketchPicker } from 'react-color';
 import type { SerializedStyles } from '@emotion/react';
 import { css as emotionCss } from '@emotion/react/macro';
-import { Box, ClickAwayListener, useTheme } from '@mui/material';
+import { Box, Button, Card, ClickAwayListener, useTheme } from '@mui/material';
 import chroma from 'chroma-js';
 
 import type { ColoredCharacter } from 'src/types';
-import { createColoredCharacters } from 'src/utils';
+import {
+  createColoredCharacters,
+  defaultShadowHexColor,
+  defaultTextHexColor,
+} from 'src/utils';
 import { ColoredCharacter as Character } from 'src/components/ColoredCharacter/ColoredCharacter';
 
 import makeStyles from './NameEditor.styles';
@@ -35,6 +39,7 @@ export const NameEditor: FC<NameEditorProps> = ({
   const theme = useTheme();
   const cssStyles = makeStyles(theme);
   const stringInputRef = useRef<HTMLInputElement>(null);
+  const [editMode, setEditMode] = useState<'shadow' | 'text'>('text');
   const [playerName, setPlayerName] = useState('');
   const [stringInputHasFocus, setStringInputHasFocus] = useState(false);
   const [selectedCharacter, setSelectedCharacter] = useState<
@@ -44,7 +49,7 @@ export const NameEditor: FC<NameEditorProps> = ({
   let previousCharacter: ColoredCharacter | undefined;
 
   /**
-   * Updates the playerName value while removing or inserting characters to the coloredCharacters state accordingly.
+   * Updates the `playerName` value while removing or inserting characters to the coloredCharacters state accordingly.
    */
   const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     const _coloredCharacters = [...coloredCharacters];
@@ -82,7 +87,7 @@ export const NameEditor: FC<NameEditorProps> = ({
   };
 
   /**
-   * Update 'selectedCharacter' depending on the cursors position inside the input element.
+   * Update `selectedCharacter` depending on the cursors position inside the input element.
    */
   const handleCharacterSelection = (
     event: KeyboardEvent<HTMLInputElement> | MouseEvent<HTMLInputElement>,
@@ -96,10 +101,10 @@ export const NameEditor: FC<NameEditorProps> = ({
   };
 
   /**
-   * Update 'selectedCharacter' and the input element selection depending on the clicked character.
+   * Update `selectedCharacter` and the input element selection depending on the clicked character.
    */
   const handleCharacterClick =
-    (character: ColoredCharacter) => (event: MouseEvent) => {
+    (character: ColoredCharacter) => (event: MouseEvent<HTMLElement>) => {
       if (!stringInputRef.current) return;
 
       const cursorIndex = coloredCharacters.indexOf(character);
@@ -114,18 +119,38 @@ export const NameEditor: FC<NameEditorProps> = ({
     };
 
   /**
-   * Update the provided 'coloredCharacters' and pass them to the 'onUpdate' callback.
-   * Also update the 'setSelectedCharacter' state in order for the color picker to work properly.
+   * Update the provided `coloredCharacters` and pass them to the `onUpdate` callback.
+   * If no `color` was passed, reset the currently `selectedCharacter`.
+   * Also update the `setSelectedCharacter` state in order for the color picker to work properly.
    */
-  const handleColorUpdate = (color: ColorResult) => {
+  const handleColorUpdate = (color?: ColorResult) => {
     const _coloredCharacters = coloredCharacters.map((coloredCharacter) => {
       if (coloredCharacter.uuid === selectedCharacter?.uuid) {
+        let shadowHexColor = color
+          ? chroma(color.hex)
+              .alpha(color.rgb.a || 1)
+              .hex()
+          : defaultShadowHexColor;
+        let textHexColor = color
+          ? chroma(color.hex)
+              .alpha(color.rgb.a || 1)
+              .hex()
+          : defaultTextHexColor;
+
+        shadowHexColor =
+          editMode === 'shadow' || !color
+            ? shadowHexColor
+            : coloredCharacter.shadowHexColor;
+        textHexColor =
+          editMode === 'text' || !color
+            ? textHexColor
+            : coloredCharacter.textHexColor;
+
         const updatedCharacter: ColoredCharacter = {
           ...coloredCharacter,
-          textHexColor: chroma(color.hex)
-            .alpha(color.rgb.a || 1)
-            .hex(),
-          touched: true,
+          shadowHexColor,
+          textHexColor,
+          touched: !!color,
         };
 
         setSelectedCharacter(updatedCharacter);
@@ -139,7 +164,7 @@ export const NameEditor: FC<NameEditorProps> = ({
   };
 
   /**
-   * When focusing the input, use the cursor index to select a coloredCharacter.
+   * When focusing the input, use the cursor index to select a `coloredCharacter`.
    * This is especially useful when the input element gained focus without actually clicking on a character.
    */
   const handleInputFocus = () => {
@@ -149,7 +174,7 @@ export const NameEditor: FC<NameEditorProps> = ({
     setStringInputHasFocus(true);
   };
 
-  // Use 'coloredCharacters' property to generate initial input string.
+  // Use `coloredCharacters` property to generate initial input string.
   useEffect(() => {
     const characters = coloredCharacters.map(
       (coloredCharacter) => coloredCharacter.character,
@@ -228,13 +253,52 @@ export const NameEditor: FC<NameEditorProps> = ({
         />
 
         {selectedCharacter && (
-          <Box onClick={(event) => event.stopPropagation()}>
+          <Card
+            css={cssStyles.colorPickerWrapper}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <Box display="flex" pt={1} px={1}>
+              <Button
+                disableElevation
+                onClick={() => setEditMode('text')}
+                size="small"
+                sx={{ textTransform: 'capitalize' }}
+                variant={editMode === 'text' ? 'contained' : undefined}
+              >
+                Text
+              </Button>
+
+              <Button
+                disableElevation
+                onClick={() => setEditMode('shadow')}
+                size="small"
+                sx={{ textTransform: 'capitalize' }}
+                variant={editMode === 'shadow' ? 'contained' : undefined}
+              >
+                Shadow
+              </Button>
+
+              <Button
+                disabled={!selectedCharacter.touched}
+                onClick={() => handleColorUpdate()}
+                size="small"
+                sx={{ ml: 'auto', textTransform: 'capitalize' }}
+                variant="outlined"
+              >
+                Reset character
+              </Button>
+            </Box>
+
             <SketchPicker
               css={cssStyles.colorPicker}
-              color={selectedCharacter.textHexColor}
+              color={
+                editMode === 'text'
+                  ? selectedCharacter.textHexColor
+                  : selectedCharacter.shadowHexColor
+              }
               onChange={(color) => handleColorUpdate(color)}
             />
-          </Box>
+          </Card>
         )}
       </Box>
     </ClickAwayListener>
