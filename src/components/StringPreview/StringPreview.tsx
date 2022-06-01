@@ -27,16 +27,16 @@ export const StringPreview: FC<StringPreviewProps> = ({
         const previewCharacter: ColoredCharacter = {
           ...coloredCharacter,
           shadowHexColor:
-            coloredCharacter.touched || !previousCharacter
+            !!coloredCharacter.shadowHexColor || !previousCharacter
               ? coloredCharacter.shadowHexColor
               : previousCharacter.shadowHexColor,
           textHexColor:
-            coloredCharacter.touched || !previousCharacter
+            !!coloredCharacter.textHexColor || !previousCharacter
               ? coloredCharacter.textHexColor
               : previousCharacter.textHexColor,
         };
 
-        if (coloredCharacter.touched) previousCharacter = coloredCharacter;
+        previousCharacter = previewCharacter;
 
         return <Character key={coloredCharacter.uuid} {...previewCharacter} />;
       })}

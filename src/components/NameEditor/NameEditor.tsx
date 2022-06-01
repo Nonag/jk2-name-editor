@@ -15,11 +15,7 @@ import { Box, Button, Card, ClickAwayListener, useTheme } from '@mui/material';
 import chroma from 'chroma-js';
 
 import type { ColoredCharacter } from 'src/types';
-import {
-  createColoredCharacters,
-  defaultShadowHexColor,
-  defaultTextHexColor,
-} from 'src/utils';
+import { createColoredCharacters } from 'src/utils';
 import { ColoredCharacter as Character } from 'src/components/ColoredCharacter/ColoredCharacter';
 
 import makeStyles from './NameEditor.styles';
@@ -126,31 +122,23 @@ export const NameEditor: FC<NameEditorProps> = ({
   const handleColorUpdate = (color?: ColorResult) => {
     const _coloredCharacters = coloredCharacters.map((coloredCharacter) => {
       if (coloredCharacter.uuid === selectedCharacter?.uuid) {
-        let shadowHexColor = color
-          ? chroma(color.hex)
-              .alpha(color.rgb.a || 1)
-              .hex()
-          : defaultShadowHexColor;
-        let textHexColor = color
-          ? chroma(color.hex)
-              .alpha(color.rgb.a || 1)
-              .hex()
-          : defaultTextHexColor;
-
-        shadowHexColor =
-          editMode === 'shadow' || !color
-            ? shadowHexColor
+        const shadowHexColor =
+          editMode === 'shadow' && color
+            ? chroma(color.hex)
+                .alpha(color.rgb.a || 1)
+                .hex()
             : coloredCharacter.shadowHexColor;
-        textHexColor =
-          editMode === 'text' || !color
-            ? textHexColor
+        const textHexColor =
+          editMode === 'text' && color
+            ? chroma(color.hex)
+                .alpha(color.rgb.a || 1)
+                .hex()
             : coloredCharacter.textHexColor;
 
         const updatedCharacter: ColoredCharacter = {
           ...coloredCharacter,
-          shadowHexColor,
-          textHexColor,
-          touched: !!color,
+          shadowHexColor: !!color ? shadowHexColor : undefined,
+          textHexColor: !!color ? textHexColor : undefined,
         };
 
         setSelectedCharacter(updatedCharacter);
@@ -202,16 +190,16 @@ export const NameEditor: FC<NameEditorProps> = ({
                 ? '⋅'
                 : coloredCharacter.character,
             shadowHexColor:
-              coloredCharacter.touched || !previousCharacter
+              !!coloredCharacter.shadowHexColor || !previousCharacter
                 ? coloredCharacter.shadowHexColor
                 : previousCharacter.shadowHexColor,
             textHexColor:
-              coloredCharacter.touched || !previousCharacter
+              !!coloredCharacter.textHexColor || !previousCharacter
                 ? coloredCharacter.textHexColor
                 : previousCharacter.textHexColor,
           };
 
-          if (coloredCharacter.touched) previousCharacter = coloredCharacter;
+          previousCharacter = previewCharacter;
 
           return (
             <Character
@@ -279,7 +267,10 @@ export const NameEditor: FC<NameEditorProps> = ({
               </Button>
 
               <Button
-                disabled={!selectedCharacter.touched}
+                disabled={
+                  !selectedCharacter.shadowHexColor &&
+                  !selectedCharacter.textHexColor
+                }
                 onClick={() => handleColorUpdate()}
                 size="small"
                 sx={{ ml: 'auto', textTransform: 'capitalize' }}

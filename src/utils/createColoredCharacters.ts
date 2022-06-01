@@ -6,19 +6,18 @@ export const defaultTextHexColor = '#ffffff';
 export const defaultShadowHexColor = '#606060';
 
 /**
- * Create colored Characters
+ * Create colored characters
  *
  * @description Takes any string and returns an array with ColoredCharacter for each character in that string.
  */
-export const createColoredCharacters = (
-  characterString: string,
-): ColoredCharacter[] =>
-  [...characterString].map((character) => ({
-    character,
-    shadowHexColor: defaultShadowHexColor,
-    textHexColor: defaultTextHexColor,
-    touched: false,
-    uuid: uuid(),
-  }));
+export const createColoredCharacters = (characterString: string) =>
+  [...characterString].map(
+    (character): ColoredCharacter => ({
+      character,
+      shadowHexColor: undefined,
+      textHexColor: undefined,
+      uuid: uuid(),
+    }),
+  );
 
 export default createColoredCharacters;
