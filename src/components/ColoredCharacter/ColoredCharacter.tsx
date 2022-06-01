@@ -19,7 +19,6 @@ export const ColoredCharacter: FC<ColoredCharacterProps> = ({
   css,
   shadowHexColor,
   textHexColor,
-  touched,
   ...props
 }) => {
   const theme = useTheme();

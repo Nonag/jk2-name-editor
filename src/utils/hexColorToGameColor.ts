@@ -1,7 +1,12 @@
 import chroma from 'chroma-js';
 
+export interface LegacyColor {
+  code: string;
+  hex: string;
+}
+
 /* eslint-disable sort-keys-fix/sort-keys-fix */
-const legacyColors = {
+export const legacyColors: Record<string, LegacyColor> = {
   black: { code: '0', hex: '000000' },
   red: { code: '1', hex: 'FF0000' },
   green: { code: '2', hex: '00FF00' },
@@ -20,23 +25,52 @@ const legacyColors = {
  *
  * @example '#ee202060' => '^Yee202060'
  */
-export const hexColorToGameColor = (hexColor: string, shortened = false) => {
+export const hexColorToGameColor = (
+  hexColor: string,
+  shortened = false,
+  tolerance = 5,
+) => {
   const hex = hexColor.replace('#', '');
+  const hasAlpha = hex.length === 8;
 
   const hexShortened = hex.replace(/\w./g, (x: string) =>
     (((('0x' + x) as any) / 17 + 0.5) | 0).toString(16),
   );
 
   // Get legacy color codes for hex colors that are close enough to one of the legacy colors.
-  const legacyCode = Object.values(legacyColors).find(({ code, hex }) => {
-    return chroma.deltaE(`#${hex}`, hexColor) < 5;
-  })?.code;
+  const bestMatchingLegacyColor = Object.values(legacyColors).reduce(
+    (bestMatchingLegacyColor: LegacyColor | undefined, legacyColor) => {
+      const deltaE = chroma.deltaE(`#${legacyColor.hex}`, hexColor);
+      const bestDeltaE = bestMatchingLegacyColor
+        ? chroma.deltaE(`#${bestMatchingLegacyColor.hex}`, hexColor)
+        : 100;
 
-  if (shortened && legacyCode) return `^${legacyCode}`;
-  if (shortened && hexShortened.length === 3) return `^x${hexShortened}`;
-  if (shortened && hexShortened.length === 4) return `^y${hexShortened}`;
-  if (hex.length === 6) return `^X${hex}`;
-  if (hex.length === 8) return `^Y${hex}`;
+      if (bestDeltaE > tolerance && deltaE > tolerance) {
+        return undefined;
+      }
+
+      if (bestDeltaE < deltaE) {
+        return bestMatchingLegacyColor;
+      }
+
+      if (deltaE < bestDeltaE) {
+        return legacyColor;
+      }
+
+      return bestMatchingLegacyColor;
+    },
+
+    undefined,
+  );
+
+  const legacyCode = bestMatchingLegacyColor?.code;
+
+  if (shortened && (!hasAlpha || tolerance === 100) && !!legacyCode)
+    return `^${legacyCode}`;
+
+  if (shortened) return hasAlpha ? `^y${hexShortened}` : `^x${hexShortened}`;
+
+  return hasAlpha ? `^Y${hex}` : `^X${hex}`;
 };
 
 export default hexColorToGameColor;

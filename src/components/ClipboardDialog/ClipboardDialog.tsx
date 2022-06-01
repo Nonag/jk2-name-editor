@@ -15,30 +15,9 @@ import {
 } from '@mui/material';
 
 import type { ColoredCharacter } from 'src/types';
-import { defaultShadowHexColor, hexColorToGameColor } from 'src/utils';
+import { getColorCodedCharacter } from 'src/utils';
 
 import { styles } from './ClipboardDialog.styles';
-
-/**
- * Transforms the provided `ColoredCharacter` to a string that is encoded with the in-game color codes.
- *
- * The game needs three color codes in front of a character to override the shadow color. The first color code is
- * not used however. Hence the `^0` that is arbitrary added to the encoded shadow color.
- */
-const getColorCodedCharacter = (
-  coloredCharacter: ColoredCharacter,
-  shortened = false,
-) => {
-  const { character, shadowHexColor, textHexColor, touched } = coloredCharacter;
-  const hasShadow = shadowHexColor !== defaultShadowHexColor;
-  const encodedTextColor = hexColorToGameColor(textHexColor, shortened);
-  const encodedShadowColor = hasShadow
-    ? `^0${hexColorToGameColor(shadowHexColor, shortened)}`
-    : '';
-  const encodedColors = touched ? encodedShadowColor + encodedTextColor : '';
-
-  return encodedColors + character;
-};
 
 export interface ClipboardDialogProps extends DialogProps {
   coloredCharacters: ColoredCharacter[];
@@ -57,6 +36,12 @@ export const ClipboardDialog: FC<ClipboardDialogProps> = ({
 
   const colorCodedPlayerNameShortened = coloredCharacters
     .map((coloredCharacter) => getColorCodedCharacter(coloredCharacter, true))
+    .join('');
+
+  const colorCodedPlayerNameLegacy = coloredCharacters
+    .map((coloredCharacter) =>
+      getColorCodedCharacter(coloredCharacter, true, 100),
+    )
     .join('');
 
   /**
@@ -112,6 +97,24 @@ export const ClipboardDialog: FC<ClipboardDialogProps> = ({
 
             <IconButton
               onClick={handleCopyToClipboard(colorCodedPlayerNameShortened)}
+            >
+              <CopyIcon />
+            </IconButton>
+          </Box>
+
+          <DialogContentText variant="body2">
+            Closest legacy codes {colorCodedPlayerNameLegacy.length} / 36
+          </DialogContentText>
+
+          <Box sx={{ alignItems: 'center', display: 'flex' }}>
+            <Typography component="pre" sx={styles.pre}>
+              <Typography component="code" sx={styles.code}>
+                {colorCodedPlayerNameLegacy}
+              </Typography>
+            </Typography>
+
+            <IconButton
+              onClick={handleCopyToClipboard(colorCodedPlayerNameLegacy)}
             >
               <CopyIcon />
             </IconButton>

@@ -1,12 +1,14 @@
 import { css } from '@emotion/react';
 import { Theme } from '@mui/material';
 
+import { defaultShadowHexColor, defaultTextHexColor } from 'src/utils';
+
 const makeStyles = (
   theme: Theme,
   {
-    shadowHexColor = theme.palette.grey[700],
-    textHexColor = theme.palette.common.white,
-  }: { shadowHexColor: string; textHexColor: string },
+    shadowHexColor = defaultShadowHexColor,
+    textHexColor = defaultTextHexColor,
+  },
 ) => ({
   coloredCharacter: css({
     color: textHexColor,
