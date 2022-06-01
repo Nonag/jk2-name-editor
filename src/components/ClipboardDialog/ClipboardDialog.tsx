@@ -38,6 +38,12 @@ export const ClipboardDialog: FC<ClipboardDialogProps> = ({
     .map((coloredCharacter) => getColorCodedCharacter(coloredCharacter, true))
     .join('');
 
+  const colorCodedPlayerNameLegacy = coloredCharacters
+    .map((coloredCharacter) =>
+      getColorCodedCharacter(coloredCharacter, true, 100),
+    )
+    .join('');
+
   /**
    * Copy name to clipboard and show notice.
    */
@@ -91,6 +97,24 @@ export const ClipboardDialog: FC<ClipboardDialogProps> = ({
 
             <IconButton
               onClick={handleCopyToClipboard(colorCodedPlayerNameShortened)}
+            >
+              <CopyIcon />
+            </IconButton>
+          </Box>
+
+          <DialogContentText variant="body2">
+            Closest legacy codes {colorCodedPlayerNameLegacy.length} / 36
+          </DialogContentText>
+
+          <Box sx={{ alignItems: 'center', display: 'flex' }}>
+            <Typography component="pre" sx={styles.pre}>
+              <Typography component="code" sx={styles.code}>
+                {colorCodedPlayerNameLegacy}
+              </Typography>
+            </Typography>
+
+            <IconButton
+              onClick={handleCopyToClipboard(colorCodedPlayerNameLegacy)}
             >
               <CopyIcon />
             </IconButton>

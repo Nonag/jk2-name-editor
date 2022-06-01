@@ -9,14 +9,15 @@ import { hexColorToGameColor } from 'src/utils';
  */
 export const getColorCodedCharacter = (
   coloredCharacter: ColoredCharacter,
-  shortened = false,
+  shortened?: boolean,
+  tolerance?: number,
 ) => {
   const { character, shadowHexColor, textHexColor } = coloredCharacter;
   const encodedTextColor = !!textHexColor
-    ? hexColorToGameColor(textHexColor, shortened)
+    ? hexColorToGameColor(textHexColor, shortened, tolerance)
     : '';
   const encodedShadowColor = !!shadowHexColor
-    ? `^0${hexColorToGameColor(shadowHexColor, shortened)}`
+    ? `^0${hexColorToGameColor(shadowHexColor, shortened, tolerance)}`
     : '';
   const encodedColors = encodedShadowColor + encodedTextColor;
 
