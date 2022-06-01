@@ -15,30 +15,9 @@ import {
 } from '@mui/material';
 
 import type { ColoredCharacter } from 'src/types';
-import { defaultShadowHexColor, hexColorToGameColor } from 'src/utils';
+import { getColorCodedCharacter } from 'src/utils';
 
 import { styles } from './ClipboardDialog.styles';
-
-/**
- * Transforms the provided `ColoredCharacter` to a string that is encoded with the in-game color codes.
- *
- * The game needs three color codes in front of a character to override the shadow color. The first color code is
- * not used however. Hence the `^0` that is arbitrary added to the encoded shadow color.
- */
-const getColorCodedCharacter = (
-  coloredCharacter: ColoredCharacter,
-  shortened = false,
-) => {
-  const { character, shadowHexColor, textHexColor, touched } = coloredCharacter;
-  const hasShadow = shadowHexColor !== defaultShadowHexColor;
-  const encodedTextColor = hexColorToGameColor(textHexColor, shortened);
-  const encodedShadowColor = hasShadow
-    ? `^0${hexColorToGameColor(shadowHexColor, shortened)}`
-    : '';
-  const encodedColors = touched ? encodedShadowColor + encodedTextColor : '';
-
-  return encodedColors + character;
-};
 
 export interface ClipboardDialogProps extends DialogProps {
   coloredCharacters: ColoredCharacter[];

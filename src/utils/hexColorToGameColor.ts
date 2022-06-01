@@ -1,7 +1,7 @@
 import chroma from 'chroma-js';
 
 /* eslint-disable sort-keys-fix/sort-keys-fix */
-const legacyColors = {
+export const legacyColors = {
   black: { code: '0', hex: '000000' },
   red: { code: '1', hex: 'FF0000' },
   green: { code: '2', hex: '00FF00' },
@@ -22,6 +22,7 @@ const legacyColors = {
  */
 export const hexColorToGameColor = (hexColor: string, shortened = false) => {
   const hex = hexColor.replace('#', '');
+  const hasAlpha = hex.length === 8;
 
   const hexShortened = hex.replace(/\w./g, (x: string) =>
     (((('0x' + x) as any) / 17 + 0.5) | 0).toString(16),
@@ -32,11 +33,11 @@ export const hexColorToGameColor = (hexColor: string, shortened = false) => {
     return chroma.deltaE(`#${hex}`, hexColor) < 5;
   })?.code;
 
-  if (shortened && legacyCode) return `^${legacyCode}`;
-  if (shortened && hexShortened.length === 3) return `^x${hexShortened}`;
-  if (shortened && hexShortened.length === 4) return `^y${hexShortened}`;
-  if (hex.length === 6) return `^X${hex}`;
-  if (hex.length === 8) return `^Y${hex}`;
+  if (shortened && !hasAlpha && !!legacyCode) return `^${legacyCode}`;
+
+  if (shortened) return hasAlpha ? `^y${hexShortened}` : `^x${hexShortened}`;
+
+  return hasAlpha ? `^Y${hex}` : `^X${hex}`;
 };
 
 export default hexColorToGameColor;
