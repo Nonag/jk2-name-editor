@@ -4,7 +4,14 @@ import { Theme } from '@mui/material';
 import { Styles } from 'src/theme/theme';
 
 export const styles: Styles = {
-  nameEditorView: (theme: Theme) => ({}),
+  nameEditorView: (theme: Theme) => ({
+    height: '100%',
+    display: 'flex',
+  }),
+
+  scoreBoard: {
+    mt: 15,
+  },
 
   clipboardIcon: {
     color: 'white',

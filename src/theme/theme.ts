@@ -30,6 +30,10 @@ const theme = createTheme({
           font-display: swap;
           font-weight: 400;
           src: local('Ergoe Extrabold'), local('Ergoe-Extrabold'), url('/static/fonts/ergoe-extrabold-condensed-regular.ttf') format('truetype');
+        },
+
+        html, body, #root {
+          height: 100%;
         }
       `,
     },

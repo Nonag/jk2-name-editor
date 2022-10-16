@@ -83,7 +83,7 @@ export const NameEditorView: FC<NameEditorViewProps> = ({
 
               <TableCell>0</TableCell>
 
-              <TableCell>
+              <TableCell sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                 <IconButton onClick={handleOpenClipboardDialog}>
                   <ClipboardIcon sx={styles.clipboardIcon} />
                 </IconButton>
