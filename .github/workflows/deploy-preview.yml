@@ -1,0 +1,39 @@
+name: Deploy to preview channel
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build_and_deploy_to_preview:
+    runs-on: ubuntu-latest
+
+    env:
+      REACT_APP_BASE_URL: /
+      REACT_APP_POST_PLAYER_NAME: "${{ secrets.REACT_APP_POST_PLAYER_NAME }}"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build app
+        run: yarn build
+
+      - name: Deploy to preview
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          channelId: preview
+          expires: 30d
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_JK2_NAME_EDITOR }}"
+          projectId: jk2-name-editor
+          repoToken: "${{ secrets.GITHUB_TOKEN }}"

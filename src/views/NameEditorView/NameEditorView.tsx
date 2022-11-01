@@ -61,8 +61,8 @@ export const NameEditorView: FC<NameEditorViewProps> = ({
       {...props}
     >
       <img
-        css={cssStyles.backgroundImg}
         alt="bespin_streets"
+        css={cssStyles.backgroundImg}
         src="/static/images/editor_background-02.jpg"
       />
 
@@ -83,7 +83,7 @@ export const NameEditorView: FC<NameEditorViewProps> = ({
 
               <TableCell>0</TableCell>
 
-              <TableCell>
+              <TableCell sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                 <IconButton onClick={handleOpenClipboardDialog}>
                   <ClipboardIcon sx={styles.clipboardIcon} />
                 </IconButton>
