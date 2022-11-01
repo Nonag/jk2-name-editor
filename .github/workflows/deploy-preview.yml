@@ -1,0 +1,28 @@
+name: Deploy to preview channel
+
+on: pull_request
+
+jobs:
+  build_and_deploy_to_preview:
+    if: "${{ github.event.pull_request.head.repo.full_name == github.repository }}"
+
+    runs-on: ubuntu-latest
+
+    env:
+      REACT_APP_BASE_URL: /
+      REACT_APP_POST_PLAYER_NAME: "${{ secrets.REACT_APP_POST_PLAYER_NAME }}"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Build app
+        run: yarn build
+
+      - name: Deploy to preview
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          expires: 30d
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_JK2_NAME_EDITOR }}"
+          projectId: jk2-name-editor
+          repoToken: "${{ secrets.GITHUB_TOKEN }}"
