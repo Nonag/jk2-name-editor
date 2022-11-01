@@ -19,9 +19,9 @@ export const legacyColors: Record<string, LegacyColor> = {
 /* eslint-enable sort-keys-fix/sort-keys-fix */
 
 /**
- * Hex color to jk2 hex color code.
+ * Hex color to jk2 in-game color code.
  *
- * @description Takes an RGBColor object and returns it as a jk2 in-game color code.
+ * @description Takes a hex color and returns it as a jk2 in-game color code.
  *
  * @example '#ee202060' => '^Yee202060'
  */
@@ -41,6 +41,7 @@ export const hexColorToGameColor = (
   const bestMatchingLegacyColor = Object.values(legacyColors).reduce(
     (bestMatchingLegacyColor: LegacyColor | undefined, legacyColor) => {
       const deltaE = chroma.deltaE(`#${legacyColor.hex}`, hexColor);
+
       const bestDeltaE = bestMatchingLegacyColor
         ? chroma.deltaE(`#${bestMatchingLegacyColor.hex}`, hexColor)
         : 100;

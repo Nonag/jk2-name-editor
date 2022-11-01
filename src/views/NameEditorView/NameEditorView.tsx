@@ -61,8 +61,8 @@ export const NameEditorView: FC<NameEditorViewProps> = ({
       {...props}
     >
       <img
-        css={cssStyles.backgroundImg}
         alt="bespin_streets"
+        css={cssStyles.backgroundImg}
         src="/static/images/editor_background-02.jpg"
       />
 
