@@ -1,4 +1,4 @@
-name: Deploy to prod channel
+name: Deploy to live channel
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build_and_deploy_to_prod:
+  build_and_deploy_to_live:
     runs-on: ubuntu-latest
 
     env:
@@ -20,7 +20,7 @@ jobs:
       - name: Build app
         run: yarn build
 
-      - name: Deploy to prod
+      - name: Deploy to live
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           channelId: live
