@@ -63,7 +63,7 @@ export const NameEditorView: FC<NameEditorViewProps> = ({
       <img
         alt="bespin_streets"
         css={cssStyles.backgroundImg}
-        src="/static/images/editor_background-02.jpg"
+        src="/static/images/editor_background-01.jpg"
       />
 
       <Grid container sx={{ position: 'relative' }}>
