@@ -11,7 +11,14 @@ import type { ColorResult } from 'react-color';
 import { SketchPicker } from 'react-color';
 import type { SerializedStyles } from '@emotion/react';
 import { css as emotionCss } from '@emotion/react/macro';
-import { Box, Button, Card, ClickAwayListener, useTheme } from '@mui/material';
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Card,
+  ClickAwayListener,
+  useTheme,
+} from '@mui/material';
 import chroma from 'chroma-js';
 
 import type { ColoredCharacter } from 'src/types';
@@ -253,25 +260,27 @@ export const NameEditor: FC<NameEditorProps> = ({
             onClick={(event) => event.stopPropagation()}
           >
             <Box display="flex" pt={1} px={1}>
-              <Button
-                disableElevation
-                onClick={() => setEditMode('text')}
-                size="small"
-                sx={{ textTransform: 'capitalize' }}
-                variant={editMode === 'text' ? 'contained' : undefined}
-              >
-                Text
-              </Button>
+              <ButtonGroup>
+                <Button
+                  disableElevation
+                  onClick={() => setEditMode('text')}
+                  size="small"
+                  sx={{ textTransform: 'capitalize' }}
+                  variant={editMode === 'text' ? 'contained' : undefined}
+                >
+                  Text
+                </Button>
 
-              <Button
-                disableElevation
-                onClick={() => setEditMode('shadow')}
-                size="small"
-                sx={{ textTransform: 'capitalize' }}
-                variant={editMode === 'shadow' ? 'contained' : undefined}
-              >
-                Shadow
-              </Button>
+                <Button
+                  disableElevation
+                  onClick={() => setEditMode('shadow')}
+                  size="small"
+                  sx={{ textTransform: 'capitalize' }}
+                  variant={editMode === 'shadow' ? 'contained' : undefined}
+                >
+                  Shadow
+                </Button>
+              </ButtonGroup>
 
               <Button
                 disabled={
