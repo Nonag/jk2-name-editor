@@ -11,11 +11,18 @@ import type { ColorResult } from 'react-color';
 import { SketchPicker } from 'react-color';
 import type { SerializedStyles } from '@emotion/react';
 import { css as emotionCss } from '@emotion/react/macro';
-import { Box, Button, Card, ClickAwayListener, useTheme } from '@mui/material';
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Card,
+  ClickAwayListener,
+  useTheme,
+} from '@mui/material';
 import chroma from 'chroma-js';
 
 import type { ColoredCharacter } from 'src/types';
-import { createColoredCharacters } from 'src/utils';
+import { createColoredCharacters, legacyColors } from 'src/utils';
 import { ColoredCharacter as Character } from 'src/components/ColoredCharacter/ColoredCharacter';
 
 import makeStyles from './NameEditor.styles';
@@ -41,6 +48,12 @@ export const NameEditor: FC<NameEditorProps> = ({
   const [selectedCharacter, setSelectedCharacter] = useState<
     ColoredCharacter | undefined
   >();
+
+  // Map legacy colors to an array of preset colors that can be used by the color picker.
+  const presetColors = Object.entries(legacyColors).map(([title, { hex }]) => ({
+    color: `#${hex}`,
+    title,
+  }));
 
   let previousCharacter: ColoredCharacter | undefined;
 
@@ -121,31 +134,32 @@ export const NameEditor: FC<NameEditorProps> = ({
    */
   const handleColorUpdate = (color?: ColorResult) => {
     const _coloredCharacters = coloredCharacters.map((coloredCharacter) => {
-      if (coloredCharacter.uuid === selectedCharacter?.uuid) {
-        const shadowHexColor =
-          editMode === 'shadow' && color
-            ? chroma(color.hex)
-                .alpha(color.rgb.a || 1)
-                .hex()
-            : coloredCharacter.shadowHexColor;
-        const textHexColor =
-          editMode === 'text' && color
-            ? chroma(color.hex)
-                .alpha(color.rgb.a || 1)
-                .hex()
-            : coloredCharacter.textHexColor;
-
-        const updatedCharacter: ColoredCharacter = {
-          ...coloredCharacter,
-          shadowHexColor: !!color ? shadowHexColor : undefined,
-          textHexColor: !!color ? textHexColor : undefined,
-        };
-
-        setSelectedCharacter(updatedCharacter);
-        return updatedCharacter;
-      } else {
+      // Skip if coloredCharacter of current iteration is not the selectedCharacter.
+      if (coloredCharacter.uuid !== selectedCharacter?.uuid)
         return coloredCharacter;
-      }
+
+      const shadowHexColor =
+        editMode === 'shadow' && color
+          ? chroma(color.hex)
+              .alpha(color.rgb.a || 1)
+              .hex()
+          : coloredCharacter.shadowHexColor;
+      const textHexColor =
+        editMode === 'text' && color
+          ? chroma(color.hex)
+              .alpha(color.rgb.a || 1)
+              .hex()
+          : coloredCharacter.textHexColor;
+
+      const updatedCharacter: ColoredCharacter = {
+        ...coloredCharacter,
+        shadowHexColor: !!color ? shadowHexColor : undefined,
+        textHexColor: !!color ? textHexColor : undefined,
+      };
+
+      setSelectedCharacter(updatedCharacter);
+
+      return updatedCharacter;
     });
 
     onUpdate(_coloredCharacters);
@@ -246,25 +260,27 @@ export const NameEditor: FC<NameEditorProps> = ({
             onClick={(event) => event.stopPropagation()}
           >
             <Box display="flex" pt={1} px={1}>
-              <Button
-                disableElevation
-                onClick={() => setEditMode('text')}
-                size="small"
-                sx={{ textTransform: 'capitalize' }}
-                variant={editMode === 'text' ? 'contained' : undefined}
-              >
-                Text
-              </Button>
+              <ButtonGroup>
+                <Button
+                  disableElevation
+                  onClick={() => setEditMode('text')}
+                  size="small"
+                  sx={{ textTransform: 'capitalize' }}
+                  variant={editMode === 'text' ? 'contained' : undefined}
+                >
+                  Text
+                </Button>
 
-              <Button
-                disableElevation
-                onClick={() => setEditMode('shadow')}
-                size="small"
-                sx={{ textTransform: 'capitalize' }}
-                variant={editMode === 'shadow' ? 'contained' : undefined}
-              >
-                Shadow
-              </Button>
+                <Button
+                  disableElevation
+                  onClick={() => setEditMode('shadow')}
+                  size="small"
+                  sx={{ textTransform: 'capitalize' }}
+                  variant={editMode === 'shadow' ? 'contained' : undefined}
+                >
+                  Shadow
+                </Button>
+              </ButtonGroup>
 
               <Button
                 disabled={
@@ -288,6 +304,7 @@ export const NameEditor: FC<NameEditorProps> = ({
                   : selectedCharacter.shadowHexColor
               }
               onChange={(color) => handleColorUpdate(color)}
+              presetColors={presetColors}
             />
           </Card>
         )}
