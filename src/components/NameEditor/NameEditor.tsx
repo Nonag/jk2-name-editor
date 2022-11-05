@@ -15,7 +15,7 @@ import { Box, Button, Card, ClickAwayListener, useTheme } from '@mui/material';
 import chroma from 'chroma-js';
 
 import type { ColoredCharacter } from 'src/types';
-import { createColoredCharacters } from 'src/utils';
+import { createColoredCharacters, legacyColors } from 'src/utils';
 import { ColoredCharacter as Character } from 'src/components/ColoredCharacter/ColoredCharacter';
 
 import makeStyles from './NameEditor.styles';
@@ -41,6 +41,12 @@ export const NameEditor: FC<NameEditorProps> = ({
   const [selectedCharacter, setSelectedCharacter] = useState<
     ColoredCharacter | undefined
   >();
+
+  // Map legacy colors to an array of preset colors that can be used by the color picker.
+  const presetColors = Object.entries(legacyColors).map(([title, { hex }]) => ({
+    color: `#${hex}`,
+    title,
+  }));
 
   let previousCharacter: ColoredCharacter | undefined;
 
@@ -289,7 +295,7 @@ export const NameEditor: FC<NameEditorProps> = ({
                   : selectedCharacter.shadowHexColor
               }
               onChange={(color) => handleColorUpdate(color)}
-              presetColors={[]}
+              presetColors={presetColors}
             />
           </Card>
         )}
