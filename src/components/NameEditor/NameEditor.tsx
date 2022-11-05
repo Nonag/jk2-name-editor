@@ -121,31 +121,32 @@ export const NameEditor: FC<NameEditorProps> = ({
    */
   const handleColorUpdate = (color?: ColorResult) => {
     const _coloredCharacters = coloredCharacters.map((coloredCharacter) => {
-      if (coloredCharacter.uuid === selectedCharacter?.uuid) {
-        const shadowHexColor =
-          editMode === 'shadow' && color
-            ? chroma(color.hex)
-                .alpha(color.rgb.a || 1)
-                .hex()
-            : coloredCharacter.shadowHexColor;
-        const textHexColor =
-          editMode === 'text' && color
-            ? chroma(color.hex)
-                .alpha(color.rgb.a || 1)
-                .hex()
-            : coloredCharacter.textHexColor;
-
-        const updatedCharacter: ColoredCharacter = {
-          ...coloredCharacter,
-          shadowHexColor: !!color ? shadowHexColor : undefined,
-          textHexColor: !!color ? textHexColor : undefined,
-        };
-
-        setSelectedCharacter(updatedCharacter);
-        return updatedCharacter;
-      } else {
+      // Skip if coloredCharacter of current iteration is not the selectedCharacter.
+      if (coloredCharacter.uuid !== selectedCharacter?.uuid)
         return coloredCharacter;
-      }
+
+      const shadowHexColor =
+        editMode === 'shadow' && color
+          ? chroma(color.hex)
+              .alpha(color.rgb.a || 1)
+              .hex()
+          : coloredCharacter.shadowHexColor;
+      const textHexColor =
+        editMode === 'text' && color
+          ? chroma(color.hex)
+              .alpha(color.rgb.a || 1)
+              .hex()
+          : coloredCharacter.textHexColor;
+
+      const updatedCharacter: ColoredCharacter = {
+        ...coloredCharacter,
+        shadowHexColor: !!color ? shadowHexColor : undefined,
+        textHexColor: !!color ? textHexColor : undefined,
+      };
+
+      setSelectedCharacter(updatedCharacter);
+
+      return updatedCharacter;
     });
 
     onUpdate(_coloredCharacters);
@@ -288,6 +289,7 @@ export const NameEditor: FC<NameEditorProps> = ({
                   : selectedCharacter.shadowHexColor
               }
               onChange={(color) => handleColorUpdate(color)}
+              presetColors={[]}
             />
           </Card>
         )}
