@@ -1,7 +1,10 @@
 /** @jsxImportSource @emotion/react */
-import type { FC, ReactNode } from 'react';
+import type { FC } from 'react';
+import { useState } from 'react';
+import { ContentPaste as ClipboardIcon } from '@mui/icons-material';
 import {
   Box,
+  IconButton,
   SxProps,
   Table,
   TableBody,
@@ -13,18 +16,37 @@ import {
   Typography,
 } from '@mui/material';
 
+import { usePlayerName } from 'src/services/state';
+import ClipboardDialog from 'src/components/ClipboardDialog/ClipboardDialog';
+import NameEditor from 'src/components/NameEditor/NameEditor';
+
 import { styles } from './ScoreBoard.styles';
 
 export interface ScoreBoardProps {
-  children: ReactNode;
   sx?: SxProps<Theme>;
 }
 
-export const ScoreBoard: FC<ScoreBoardProps> = ({
-  children,
-  sx = [],
-  ...props
-}) => {
+export const ScoreBoard: FC<ScoreBoardProps> = ({ sx = [], ...props }) => {
+  const [showClipboardDialog, setShowClipboardDialog] = useState(false);
+  const { playerName } = usePlayerName();
+
+  /**
+   * Open the clip board dialog and send the player name to the server.
+   */
+  const handleOpenClipboardDialog = () => {
+    const requestOptions = {
+      body: JSON.stringify({ playerName: playerName.name }),
+      headers: { 'Content-Type': 'application/json' },
+      method: 'POST',
+    };
+
+    fetch(process.env.REACT_APP_POST_PLAYER_NAME!, requestOptions).catch(() =>
+      console.warn('Player name was not submitted.'),
+    );
+
+    setShowClipboardDialog(true);
+  };
+
   return (
     <Box
       sx={[styles.scoreBoard, ...(Array.isArray(sx) ? sx : [sx])]}
@@ -50,9 +72,32 @@ export const ScoreBoard: FC<ScoreBoardProps> = ({
             </TableRow>
           </TableHead>
 
-          <TableBody>{children}</TableBody>
+          <TableBody>
+            <TableRow>
+              <TableCell>
+                <NameEditor />
+              </TableCell>
+
+              <TableCell>0</TableCell>
+
+              <TableCell>0</TableCell>
+
+              <TableCell>0</TableCell>
+
+              <TableCell sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <IconButton onClick={handleOpenClipboardDialog}>
+                  <ClipboardIcon sx={styles.clipboardIcon} />
+                </IconButton>
+              </TableCell>
+            </TableRow>
+          </TableBody>
         </Table>
       </TableContainer>
+
+      <ClipboardDialog
+        open={showClipboardDialog}
+        onClose={() => setShowClipboardDialog(false)}
+      />
     </Box>
   );
 };

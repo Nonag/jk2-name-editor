@@ -13,10 +13,6 @@ export const styles: Styles = {
     mt: 15,
   },
 
-  clipboardIcon: {
-    color: 'white',
-  },
-
   chat: {
     padding: 2,
     left: 0,
