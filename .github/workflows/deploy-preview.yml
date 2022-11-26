@@ -10,8 +10,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
+      REACT_APP_API_URL: "${{ secrets.REACT_APP_API_URL }}"
       REACT_APP_BASE_URL: /
-      REACT_APP_POST_PLAYER_NAME: "${{ secrets.REACT_APP_POST_PLAYER_NAME }}"
 
     steps:
       - name: Checkout repository

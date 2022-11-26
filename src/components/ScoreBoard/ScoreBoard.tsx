@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import type { FC } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ContentPaste as ClipboardIcon } from '@mui/icons-material';
 import {
   Box,
@@ -16,6 +16,8 @@ import {
   Typography,
 } from '@mui/material';
 
+import { PlayerName } from 'src/types';
+import { api } from 'src/services/api';
 import { usePlayerName } from 'src/services/state';
 import ClipboardDialog from 'src/components/ClipboardDialog/ClipboardDialog';
 import NameEditor from 'src/components/NameEditor/NameEditor';
@@ -28,24 +30,27 @@ export interface ScoreBoardProps {
 
 export const ScoreBoard: FC<ScoreBoardProps> = ({ sx = [], ...props }) => {
   const [showClipboardDialog, setShowClipboardDialog] = useState(false);
+  const [playerNames, setPlayerNames] = useState<PlayerName[] | undefined>();
   const { playerName } = usePlayerName();
 
   /**
    * Open the clip board dialog and send the player name to the server.
    */
   const handleOpenClipboardDialog = () => {
-    const requestOptions = {
-      body: JSON.stringify({ playerName: playerName.name }),
-      headers: { 'Content-Type': 'application/json' },
-      method: 'POST',
-    };
-
-    fetch(process.env.REACT_APP_POST_PLAYER_NAME!, requestOptions).catch(() =>
-      console.warn('Player name was not submitted.'),
-    );
+    api
+      .playerNameCreate(playerName)
+      .catch((error) => console.warn('Player name was not submitted.'));
 
     setShowClipboardDialog(true);
   };
+
+  // Fetch player names on mount.
+  useEffect(() => {
+    api
+      .playerNameList()
+      .then((playerNameList) => setPlayerNames(playerNameList))
+      .catch((error) => console.warn('Could not fetch player names.'));
+  }, []);
 
   return (
     <Box
