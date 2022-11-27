@@ -239,6 +239,7 @@ export const NameEditor: FC<NameEditorProps> = ({ css, ...props }) => {
 
         <input
           css={cssStyles.stringInput}
+          maxLength={36}
           onBlur={() => setStringInputHasFocus(false)}
           onChange={handleNameChange}
           onFocus={handleInputFocus}
