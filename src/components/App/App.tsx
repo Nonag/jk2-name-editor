@@ -5,6 +5,7 @@ import createCache from '@emotion/cache';
 import { CacheProvider } from '@emotion/react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 
+import { PlayerNameProvider } from 'src/services/state';
 import theme from 'src/theme/theme';
 import NameEditorView from 'src/views/NameEditorView/NameEditorView';
 
@@ -23,7 +24,9 @@ const App: FC = () => {
       <ThemeProvider theme={theme}>
         <CssBaseline />
 
-        <NameEditorView />
+        <PlayerNameProvider>
+          <NameEditorView />
+        </PlayerNameProvider>
       </ThemeProvider>
     </CacheProvider>
   );

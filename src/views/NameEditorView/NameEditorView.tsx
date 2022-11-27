@@ -1,22 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import type { FC } from 'react';
-import { useState } from 'react';
-import { ContentPaste as ClipboardIcon } from '@mui/icons-material';
-import {
-  Container,
-  Grid,
-  IconButton,
-  SxProps,
-  TableCell,
-  TableRow,
-  Theme,
-  useTheme,
-} from '@mui/material';
+import { Container, Grid, SxProps, Theme, useTheme } from '@mui/material';
 
-import { createColoredCharacters } from 'src/utils';
 import ChatPreview from 'src/components/ChatPreview/ChatPreview';
-import ClipboardDialog from 'src/components/ClipboardDialog/ClipboardDialog';
-import NameEditor from 'src/components/NameEditor/NameEditor';
 import ScoreBoard from 'src/components/ScoreBoard/ScoreBoard';
 
 import makeStyles, { styles } from './NameEditorView.styles';
@@ -31,28 +17,6 @@ export const NameEditorView: FC<NameEditorViewProps> = ({
 }) => {
   const theme = useTheme();
   const cssStyles = makeStyles(theme);
-  const initialCharacters = createColoredCharacters('Padawan');
-  const [characters, setCharacters] = useState(initialCharacters);
-  const [showClipboardDialog, setShowClipboardDialog] = useState(false);
-
-  /**
-   * Open the clip board dialog and send the player name to the server.
-   */
-  const handleOpenClipboardDialog = () => {
-    const requestOptions = {
-      body: JSON.stringify({
-        playerName: characters.map((character) => character.character).join(''),
-      }),
-      headers: { 'Content-Type': 'application/json' },
-      method: 'POST',
-    };
-
-    fetch(process.env.REACT_APP_POST_PLAYER_NAME!, requestOptions).catch(() =>
-      console.warn('Player name was not submitted.'),
-    );
-
-    setShowClipboardDialog(true);
-  };
 
   return (
     <Container
@@ -68,38 +32,11 @@ export const NameEditorView: FC<NameEditorViewProps> = ({
 
       <Grid container sx={{ position: 'relative' }}>
         <Grid item xs={12}>
-          <ScoreBoard sx={styles.scoreBoard}>
-            <TableRow>
-              <TableCell>
-                <NameEditor
-                  coloredCharacters={characters}
-                  onUpdate={setCharacters}
-                />
-              </TableCell>
-
-              <TableCell>0</TableCell>
-
-              <TableCell>0</TableCell>
-
-              <TableCell>0</TableCell>
-
-              <TableCell sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <IconButton onClick={handleOpenClipboardDialog}>
-                  <ClipboardIcon sx={styles.clipboardIcon} />
-                </IconButton>
-              </TableCell>
-            </TableRow>
-          </ScoreBoard>
+          <ScoreBoard sx={styles.scoreBoard} />
         </Grid>
       </Grid>
 
-      <ChatPreview sx={styles.chat} characters={characters} />
-
-      <ClipboardDialog
-        coloredCharacters={characters}
-        open={showClipboardDialog}
-        onClose={() => setShowClipboardDialog(false)}
-      />
+      <ChatPreview sx={styles.chat} />
     </Container>
   );
 };

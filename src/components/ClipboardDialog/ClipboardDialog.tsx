@@ -14,31 +14,29 @@ import {
   Typography,
 } from '@mui/material';
 
-import type { ColoredCharacter } from 'src/types';
 import { getColorCodedCharacter } from 'src/utils';
+import { usePlayerName } from 'src/services/state';
 
 import { styles } from './ClipboardDialog.styles';
 
-export interface ClipboardDialogProps extends DialogProps {
-  coloredCharacters: ColoredCharacter[];
-}
+export interface ClipboardDialogProps extends DialogProps {}
 
 export const ClipboardDialog: FC<ClipboardDialogProps> = ({
-  coloredCharacters,
   sx = [],
   ...props
 }) => {
   const [showNotice, setShowNotice] = useState(false);
+  const { playerName } = usePlayerName();
 
-  const colorCodedPlayerName = coloredCharacters
+  const colorCodedPlayerName = playerName.coloredCharacters
     .map((coloredCharacter) => getColorCodedCharacter(coloredCharacter))
     .join('');
 
-  const colorCodedPlayerNameShortened = coloredCharacters
+  const colorCodedPlayerNameShortened = playerName.coloredCharacters
     .map((coloredCharacter) => getColorCodedCharacter(coloredCharacter, true))
     .join('');
 
-  const colorCodedPlayerNameLegacy = coloredCharacters
+  const colorCodedPlayerNameLegacy = playerName.coloredCharacters
     .map((coloredCharacter) =>
       getColorCodedCharacter(coloredCharacter, true, 100),
     )

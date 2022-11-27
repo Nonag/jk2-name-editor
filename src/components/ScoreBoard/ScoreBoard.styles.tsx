@@ -37,4 +37,8 @@ export const styles: Styles = {
       backgroundColor: theme.palette.primary.main + '94',
     },
   }),
+
+  clipboardIcon: {
+    color: 'white',
+  },
 } as const;
