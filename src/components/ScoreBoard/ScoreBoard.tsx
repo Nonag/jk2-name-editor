@@ -21,6 +21,7 @@ import { api } from 'src/services/api';
 import { usePlayerName } from 'src/services/state';
 import ClipboardDialog from 'src/components/ClipboardDialog/ClipboardDialog';
 import NameEditor from 'src/components/NameEditor/NameEditor';
+import StringPreview from 'src/components/StringPreview/StringPreview';
 
 import { styles } from './ScoreBoard.styles';
 
@@ -30,7 +31,7 @@ export interface ScoreBoardProps {
 
 export const ScoreBoard: FC<ScoreBoardProps> = ({ sx = [], ...props }) => {
   const [showClipboardDialog, setShowClipboardDialog] = useState(false);
-  const [playerNames, setPlayerNames] = useState<PlayerName[] | undefined>();
+  const [playerNames, setPlayerNames] = useState<PlayerName[]>([]);
   const { playerName } = usePlayerName();
 
   /**
@@ -95,6 +96,23 @@ export const ScoreBoard: FC<ScoreBoardProps> = ({ sx = [], ...props }) => {
                 </IconButton>
               </TableCell>
             </TableRow>
+
+            {!!playerNames.length &&
+              playerNames.map((playerName, index) => (
+                <TableRow key={index}>
+                  <TableCell>
+                    <StringPreview characters={playerName.coloredCharacters} />
+                  </TableCell>
+
+                  <TableCell>0</TableCell>
+
+                  <TableCell>0</TableCell>
+
+                  <TableCell>0</TableCell>
+
+                  <TableCell></TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>
