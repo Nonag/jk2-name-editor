@@ -1,6 +1,7 @@
 {
   "name": "jk2-name-editor",
   "version": "0.1.0",
+  "packageManager": "yarn@4.4.1",
   "private": true,
   "dependencies": {
     "@emotion/cache": "^11.10.5",
