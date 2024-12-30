@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
-import type { FC, HTMLAttributes } from 'react';
-import type { SerializedStyles } from '@emotion/react';
+import { type FC, type HTMLAttributes } from 'react';
+import { type SerializedStyles } from '@emotion/react';
 import { useTheme } from '@mui/material';
 
-import type { ColoredCharacter as ColoredCharacterInterface } from 'src/types';
+import { type ColoredCharacter as ColoredCharacterInterface } from 'src/types';
 
 import makeStyles from './ColoredCharacter.styles';
 

@@ -1,13 +1,13 @@
 /** @jsxImportSource @emotion/react */
-import type { FC, MouseEvent } from 'react';
+import { type FC, type MouseEvent } from 'react';
 import { useState } from 'react';
 import { ContentCopy as CopyIcon } from '@mui/icons-material';
-import type { DialogProps } from '@mui/material';
 import {
   Box,
   Dialog,
   DialogContent,
   DialogContentText,
+  type DialogProps,
   DialogTitle,
   IconButton,
   Snackbar,

@@ -1,8 +1,8 @@
 /** @jsxImportSource @emotion/react */
-import type { FC } from 'react';
-import { SerializedStyles } from '@emotion/react';
+import { type FC } from 'react';
+import { type SerializedStyles } from '@emotion/react';
 
-import type { ColoredCharacter } from 'src/types';
+import { type ColoredCharacter } from 'src/types';
 import { ColoredCharacter as Character } from 'src/components/ColoredCharacter/ColoredCharacter';
 
 import cssStyles from './StringPreview.styles';

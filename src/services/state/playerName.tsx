@@ -1,7 +1,12 @@
-import type { FC, ReactNode } from 'react';
-import { createContext, useContext, useState } from 'react';
+import {
+  createContext,
+  type FC,
+  type ReactNode,
+  useContext,
+  useState,
+} from 'react';
 
-import { PlayerName } from 'src/types';
+import { type PlayerName } from 'src/types';
 import { createColoredCharacters } from 'src/utils';
 
 export interface PlayerNameContextValue {

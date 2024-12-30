@@ -1,4 +1,4 @@
-import { ColoredCharacter } from './coloredCharacter';
+import { type ColoredCharacter } from './coloredCharacter';
 
 export interface PlayerName {
   coloredCharacters: ColoredCharacter[];

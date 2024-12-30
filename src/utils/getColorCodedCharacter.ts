@@ -1,4 +1,4 @@
-import type { ColoredCharacter } from 'src/types';
+import { type ColoredCharacter } from 'src/types';
 import { hexColorToGameColor } from 'src/utils';
 
 /**
