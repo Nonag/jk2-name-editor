@@ -1,15 +1,15 @@
 /** @jsxImportSource @emotion/react */
-import type {
-  ChangeEvent,
-  FC,
-  HTMLAttributes,
-  KeyboardEvent,
-  MouseEvent,
+import {
+  type ChangeEvent,
+  type FC,
+  type HTMLAttributes,
+  type KeyboardEvent,
+  type MouseEvent,
+  useRef,
+  useState,
 } from 'react';
-import { useRef, useState } from 'react';
-import type { ColorResult } from 'react-color';
-import { SketchPicker } from 'react-color';
-import type { SerializedStyles } from '@emotion/react';
+import { type ColorResult, SketchPicker } from 'react-color';
+import { type SerializedStyles } from '@emotion/react';
 import { css as emotionCss } from '@emotion/react/macro';
 import {
   Box,
@@ -28,6 +28,16 @@ import { ColoredCharacter as Character } from 'src/components/ColoredCharacter/C
 
 import makeStyles from './NameEditor.styles';
 
+/**
+ * {@link legacyColors} transformed into an array of objects that the {@link SketchPicker} component can use.
+ */
+const presetLegacyColors = Object.entries(legacyColors).map(
+  ([title, { hex }]) => ({
+    color: `#${hex}`,
+    title,
+  }),
+);
+
 export interface NameEditorProps extends HTMLAttributes<HTMLDivElement> {
   css?: SerializedStyles | SerializedStyles[];
 }
@@ -42,12 +52,6 @@ export const NameEditor: FC<NameEditorProps> = ({ css, ...props }) => {
   const [selectedCharacter, setSelectedCharacter] = useState<
     ColoredCharacter | undefined
   >();
-
-  // Map legacy colors to an array of preset colors that can be used by the color picker.
-  const presetColors = Object.entries(legacyColors).map(([title, { hex }]) => ({
-    color: `#${hex}`,
-    title,
-  }));
 
   let previousCharacter: ColoredCharacter | undefined;
 
@@ -298,7 +302,7 @@ export const NameEditor: FC<NameEditorProps> = ({ css, ...props }) => {
                   : selectedCharacter.shadowHexColor
               }
               onChange={(color) => handleColorUpdate(color)}
-              presetColors={presetColors}
+              presetColors={presetLegacyColors}
             />
           </Card>
         )}

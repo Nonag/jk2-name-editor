@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import type { FC } from 'react';
-import type { Options } from '@emotion/cache';
-import createCache from '@emotion/cache';
+import { type FC } from 'react';
+import createCache, { type Options } from '@emotion/cache';
 import { CacheProvider } from '@emotion/react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 

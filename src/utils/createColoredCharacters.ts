@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
 
-import type { ColoredCharacter } from 'src/types';
+import { type ColoredCharacter } from 'src/types';
 
 export const defaultTextHexColor = '#ffffff';
 export const defaultShadowHexColor = '#606060';

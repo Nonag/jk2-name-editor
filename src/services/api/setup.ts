@@ -1,5 +1,4 @@
-import type { AxiosRequestConfig } from 'axios';
-import axios from 'axios';
+import axios, { type InternalAxiosRequestConfig } from 'axios';
 
 import { REACT_APP_API_URL } from 'src/constants';
 import { toSnakeCase } from 'src/utils';
@@ -11,7 +10,7 @@ export const axiosInstance = axios.create({
 
 // Add a request interceptor and transform POST request URL-Params to snake_case.
 axiosInstance.interceptors.request.use(
-  (config: AxiosRequestConfig) => {
+  (config: InternalAxiosRequestConfig) => {
     config.params = toSnakeCase(config.params);
 
     return config;

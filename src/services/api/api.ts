@@ -1,4 +1,4 @@
-import type { PlayerName } from 'src/types';
+import { type PlayerName } from 'src/types';
 
 import axi from './setup';
 import { urls } from './urls';

@@ -1,22 +1,21 @@
 /** @jsxImportSource @emotion/react */
-import type { FC } from 'react';
-import { useEffect, useState } from 'react';
+import { type FC, useEffect, useState } from 'react';
 import { ContentPaste as ClipboardIcon } from '@mui/icons-material';
 import {
   Box,
   IconButton,
-  SxProps,
+  type SxProps,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Theme,
+  type Theme,
   Typography,
 } from '@mui/material';
 
-import { PlayerName } from 'src/types';
+import { type PlayerName } from 'src/types';
 import { api } from 'src/services/api';
 import { usePlayerName } from 'src/services/state';
 import ClipboardDialog from 'src/components/ClipboardDialog/ClipboardDialog';

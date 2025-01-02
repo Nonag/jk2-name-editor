@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import type { FC } from 'react';
-import { Container, Grid, SxProps, Theme, useTheme } from '@mui/material';
+import { type FC } from 'react';
+import { Container, Grid, type SxProps, Theme, useTheme } from '@mui/material';
 
 import ChatPreview from 'src/components/ChatPreview/ChatPreview';
 import ScoreBoard from 'src/components/ScoreBoard/ScoreBoard';

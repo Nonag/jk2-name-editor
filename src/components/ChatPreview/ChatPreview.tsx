@@ -1,30 +1,28 @@
 /** @jsxImportSource @emotion/react */
-import type { FC } from 'react';
-import { Box, SxProps, Theme, useTheme } from '@mui/material';
+import { type FC } from 'react';
+import { Box, type BoxProps, useTheme } from '@mui/material';
 
 import { usePlayerName } from 'src/services/state';
 import StringPreview from 'src/components/StringPreview/StringPreview';
 
-import makeStyles, { styles } from './ChatPreview.styles';
+import makeStyles from './ChatPreview.styles';
 
-export interface ChatPreviewProps {
-  sx?: SxProps<Theme>;
-}
+export interface ChatPreviewProps extends BoxProps {}
 
-export const ChatPreview: FC<ChatPreviewProps> = ({ sx = [], ...props }) => {
+/**
+ * A mocked chat which displays a single message sent by the player whose name is currently edited.
+ */
+export const ChatPreview: FC<ChatPreviewProps> = ({ ...props }) => {
   const theme = useTheme();
-  const cssStyles = makeStyles(theme);
+  const styles = makeStyles(theme);
   const { playerName } = usePlayerName();
 
   return (
-    <Box
-      sx={[styles.chatPreview, ...(Array.isArray(sx) ? sx : [sx])]}
-      {...props}
-    >
+    <Box css={styles.chatPreview(theme)} {...props}>
       <StringPreview characters={playerName.coloredCharacters} />
 
-      <span css={cssStyles.colon}>: </span>
-      <span css={cssStyles.chatMessage}>I have a bad feeling about this.</span>
+      <span css={styles.colon}>: </span>
+      <span css={styles.chatMessage}>I have a bad feeling about this.</span>
     </Box>
   );
 };
