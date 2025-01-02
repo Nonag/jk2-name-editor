@@ -17,14 +17,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Enable Corepack
+        run: corepack enable
+
       - name: Install node
         uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: 'yarn'
-
-      - name: Enable Corepack
-        run: corepack enable
 
       - name: Install dependencies
         run: yarn install
