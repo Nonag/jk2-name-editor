@@ -8,8 +8,7 @@ import { type ColoredCharacter as ColoredCharacterInterface } from 'src/types';
 import makeStyles from './ColoredCharacter.styles';
 
 export interface ColoredCharacterProps
-  extends ColoredCharacterInterface,
-    HTMLAttributes<HTMLSpanElement> {
+  extends ColoredCharacterInterface, HTMLAttributes<HTMLSpanElement> {
   css?: SerializedStyles | SerializedStyles[];
 }
 
