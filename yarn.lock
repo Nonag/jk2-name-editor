@@ -6497,6 +6497,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eslint-config-prettier@npm:^9.0.0":
+  version: 9.1.2
+  resolution: "eslint-config-prettier@npm:9.1.2"
+  peerDependencies:
+    eslint: ">=7.0.0"
+  bin:
+    eslint-config-prettier: bin/cli.js
+  checksum: 10c0/d2e9dc913b1677764a4732433d83d258f40820458c65d0274cb9e3eaf6559b39f2136446f310c05abed065a4b3c2e901807ccf583dff76c6227eaebf4132c39a
+  languageName: node
+  linkType: hard
+
 "eslint-config-react-app@npm:^7.0.1":
   version: 7.0.1
   resolution: "eslint-config-react-app@npm:7.0.1"
@@ -9314,6 +9325,7 @@ __metadata:
     "@types/uuid": "npm:^10.0.0"
     axios: "npm:^1.13.2"
     chroma-js: "npm:^3.2.0"
+    eslint-config-prettier: "npm:^9.0.0"
     eslint-plugin-prettier: "npm:^5.5.4"
     eslint-plugin-simple-import-sort: "npm:^12.1.1"
     eslint-plugin-sort-keys-fix: "npm:^1.1.2"
